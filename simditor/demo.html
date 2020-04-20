@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="./app.css"/>
+<link rel="stylesheet" type="text/css" href="./mobile.css"/>
+<link rel="stylesheet" type="text/css" href="./simditor.css"/>
+
+<script type="text/javascript" src="./jquery.min.js"></script>
+<script type="text/javascript" src="./module.js"></script>
+<script type="text/javascript" src="./hotkeys.js"></script>
+<script type="text/javascript" src="./uploader.js"></script>
+<script type="text/javascript" src="./simditor.js"></script>
+
+<style>
+html,body,div{
+    padding:0 0;
+    margin: 0 0;
+}
+</style>
+
+</head>
+<body>
+<div>
+    <textarea name='comment' id="editor" autofocus></textarea>
+</div>
+<script type="text/javascript">
+
+var editor = new Simditor({
+    toolbar: [
+        'title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale',
+        'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link',
+        'image', 'hr', '|', 'alignment'
+    ],
+    textarea: '#editor',
+    placeholder: '',
+    defaultImage: '/static/home/images/logo.png',
+    imageButton: ['upload'],
+    upload: {
+        url: '/article/upload',
+        //params: {_token: token},
+        fileKey: 'file',
+        leaveConfirm: '正在上传文件..',
+        connectionCount: 3
+    }
+});
+
+function getHtmlContent(){
+    return editor.getValue()
+}
+
+function setHtmlContent(value){
+    editor.setValue(value);
+}
+</script>
+</body>
+
+
+
+</html>

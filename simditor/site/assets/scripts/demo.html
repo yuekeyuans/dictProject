@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<head>
+<link rel="stylesheet" type="text/css" href="./app.css"/>
+<link rel="stylesheet" type="text/css" href="./mobile.css"/>
+<link rel="stylesheet" type="text/css" href="./simditor.css"/>
+
+<script type="text/javascript" src="./jquery.min.js"></script>
+<script type="text/javascript" src="./module.js"></script>
+<script type="text/javascript" src="./hotkeys.js"></script>
+<script type="text/javascript" src="./uploader.js"></script>
+<script type="text/javascript" src="./simditor.js"></script>
+
+<style>
+
+</style>
+
+</head>
+<body>
+<div style="padding:10 10;margin:0 0;">
+<textarea name='comment' id="editor" autofocus></textarea>
+</div>
+<script>
+
+var editor = new Simditor({
+    toolbar: [
+        'title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale',
+        'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link',
+        'image', 'hr', '|', 'alignment'
+    ],
+    textarea: '#editor',
+    placeholder: '写点什么...',
+    defaultImage: '/static/home/images/logo.png',
+    imageButton: ['upload'],
+    upload: {
+        url: '/article/upload',
+        //params: {_token: token},
+        fileKey: 'file',
+        leaveConfirm: '正在上传文件..',
+        connectionCount: 3
+    }
+});
+</script>
+</body>
+
+
+
+</html>

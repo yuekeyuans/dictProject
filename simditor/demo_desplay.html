@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="./app.css"/>
+<link rel="stylesheet" type="text/css" href="./mobile.css"/>
+<link rel="stylesheet" type="text/css" href="./simditor.css"/>
+<link rel="stylesheet" type="text/css" href="./simditor-fullscreen.css" />
+<link rel="stylesheet" type="text/css" href="./simditor-emoji.css" />
+<link rel="stylesheet" type="text/css" href="./simditor-html.css" media="screen" charset="utf-8" />
+<link rel="stylesheet" type="text/css" href="./simditor-markdown.css" media="screen" charset="utf-8" />
+<link rel="stylesheet" type="text/css" href="./simditor-checklist.css" />
+
+<script type="text/javascript" src="./jquery.min.js"></script>
+<script type="text/javascript" src="./module.js"></script>
+<script type="text/javascript" src="./hotkeys.js"></script>
+<script type="text/javascript" src="./uploader.js"></script>
+<script type="text/javascript" src="./simditor.js"></script>
+<script type="text/javascript" src="./simditor-fullscreen.js"></script>
+<script type="text/javascript" src="./simditor-dropzone.js"></script>
+<script type="text/javascript" src="./simditor-emoji.js"></script>
+<!--<script type="text/javascript" src="./simditor-autosave.js"></script>-->
+<script type="text/javascript" src="./simditor-mark.js"></script>
+<script type="text/javascript" src="./beautify.js"></script>
+<script type="text/javascript" src="./beautify-css.js"></script>
+<script type="text/javascript" src="./beautify-html.js"></script>
+<script type="text/javascript" src="./simditor-html.js"></script>
+<script type="text/javascript" src="./marked.js"></script>
+<script type="text/javascript" src="./to-markdown.js"></script>
+<script type="text/javascript" src="./simditor-markdown.js"></script>
+<script type="text/javascript" src="./simditor-checklist.js"></script>
+<script type="text/javascript" src="./jsHtmlToText.js"></script>
+
+<style>
+body{
+    zoom: 1.0;
+}
+html,body,div{
+    padding:0 0;
+    margin: 0 0;
+}
+</style>
+
+</head>
+<body>
+<div>
+    <textarea name='comment' id="editor" autofocus></textarea>
+</div>
+<script type="text/javascript">
+
+var editor = new Simditor({
+    toolbar: [
+        'title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale',
+        'color', '|', 'ol', 'ul', 'blockquote',  'table', '|', 'link',
+        'image', 'hr', 'alignment', '|', 'emoji',
+        'checklist', 'mark', 'html', 'markdown'  ,'fullscreen',
+
+    ],
+    textarea: '#editor',
+    placeholder: '',
+    defaultImage: './logo.png',
+    imageButton: ['upload'],
+    pasteImage:true,
+    upload: {
+        url: '/article/upload',
+        params: {_token: ""},
+        fileKey: 'file',
+        leaveConfirm: '正在上传文件..',
+        connectionCount: 20
+    },
+    emoji: {
+        imagePath: './emoji/'
+    },
+});
+
+function getHtmlContent(){
+    return $(".simditor-body").html();
+}
+
+function setHtmlContent(value){
+    $(".simditor-body").html(value);
+}
+
+// TODO:
+function getMarkdownContent(){
+    return "";
+}
+
+// TODO:
+function setMarkdownContent(value){
+
+}
+
+function getPlainTextContent(){
+    return htmlToText(getHtmlContent());
+
+}
+
+// TODO
+function setPlainTextValue(value){
+
+}
+
+function setScaleFactor(value){
+    $(".simditor-body").css("zoom", value);
+}
+
+</script>
+</body>
+</html>

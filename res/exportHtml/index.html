@@ -1,0 +1,31 @@
+<html>
+
+<head>
+<style>
+* {
+    margin: 0 0;
+    padding: 0 0;
+}
+frameset{
+    padding:0px;
+    margin:0px;
+    border:none" 
+} 
+frame{
+    width:100%;
+    padding:0px;
+    margin:0px;
+    border:none;
+}
+</style>
+
+</head>
+
+<frameset rows="50px ,*" style="border:none;">
+    <frame name="frame_title" src="frame_dict_title.html" style="border-bottom: 1px solid #aaaaaa;" frameborder='0'>
+    <frameset cols="200px, *" framespacing="0">
+        <frame name="entry" src="entry_list.html" style="border-right:1px solid #aaaaaa;" frameborder='0'>
+        <frame name="display" src="frame_dict_content.html" style="border:none;" frameborder='0'>
+    </frameset>
+</frameset>
+</html>
