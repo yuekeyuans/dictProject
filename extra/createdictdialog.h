@@ -14,9 +14,13 @@ class CreateDictDialog : public QDialog
 public:
     explicit CreateDictDialog(QWidget *parent = nullptr);
     ~CreateDictDialog();
-
+    QString getName();
+    QString getPath();
+    void openFileDialog();
 private:
     Ui::CreateDictDialog *ui;
+    void checkInput();
+
 };
 
 #endif // CREATEDICTDIALOG_H

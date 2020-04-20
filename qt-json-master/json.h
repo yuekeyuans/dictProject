@@ -35,8 +35,8 @@
  * Json parses a JSON data into a QVariant hierarchy.
  */
 namespace QtJson {
-    typedef QVariantMap JsonObject;
-    typedef QVariantList JsonArray;
+    using JsonObject = QVariantMap;
+    using JsonArray = QVariantList;
 
     /**
      * Clone a JSON object (makes a deep copy)
@@ -167,7 +167,7 @@ namespace QtJson {
 
         Object& operator=(const QVariant& rhs) {
             /** It maybe more robust when running under Qt versions below 4.7 */
-            QObject * obj = qvariant_cast<QObject *>(rhs);
+            auto * obj = qvariant_cast<QObject *>(rhs);
             //  setValue(rhs);
             setValue(obj);
             return *this;

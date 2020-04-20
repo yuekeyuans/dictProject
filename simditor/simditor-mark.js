@@ -25,6 +25,15 @@ SimditorMark = (function(superClass) {
     return SimditorMark.__super__.constructor.apply(this, arguments);
   }
 
+  SimditorMark.i18n = {
+    'zh-CN': {
+      mark: '荧光笔'
+    },
+    'en-US': {
+      mark: 'mark'
+    }
+  };
+  
   SimditorMark.prototype.name = 'mark';
 
   SimditorMark.prototype.icon = 'mark';

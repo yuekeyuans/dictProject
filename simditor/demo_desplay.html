@@ -11,14 +11,14 @@
 <link rel="stylesheet" type="text/css" href="./simditor-checklist.css" />
 
 <script type="text/javascript" src="./jquery.min.js"></script>
-<script type="text/javascript" src="./module.js"></script>
+<!--<script type="text/javascript" src="./module.js"></script>
 <script type="text/javascript" src="./hotkeys.js"></script>
 <script type="text/javascript" src="./uploader.js"></script>
 <script type="text/javascript" src="./simditor.js"></script>
 <script type="text/javascript" src="./simditor-fullscreen.js"></script>
 <script type="text/javascript" src="./simditor-dropzone.js"></script>
 <script type="text/javascript" src="./simditor-emoji.js"></script>
-<!--<script type="text/javascript" src="./simditor-autosave.js"></script>-->
+<script type="text/javascript" src="./simditor-autosave.js"></script>
 <script type="text/javascript" src="./simditor-mark.js"></script>
 <script type="text/javascript" src="./beautify.js"></script>
 <script type="text/javascript" src="./beautify-css.js"></script>
@@ -27,7 +27,7 @@
 <script type="text/javascript" src="./marked.js"></script>
 <script type="text/javascript" src="./to-markdown.js"></script>
 <script type="text/javascript" src="./simditor-markdown.js"></script>
-<script type="text/javascript" src="./simditor-checklist.js"></script>
+<script type="text/javascript" src="./simditor-checklist.js"></script>-->
 <script type="text/javascript" src="./jsHtmlToText.js"></script>
 
 <style>
@@ -43,34 +43,14 @@ html,body,div{
 </head>
 <body>
 <div>
-    <textarea name='comment' id="editor" autofocus></textarea>
+    <div class="simditor">
+        <div class="simditor-body">
+            content is loading
+        </div>
+    </div>
 </div>
 <script type="text/javascript">
 
-var editor = new Simditor({
-    toolbar: [
-        'title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale',
-        'color', '|', 'ol', 'ul', 'blockquote',  'table', '|', 'link',
-        'image', 'hr', 'alignment', '|', 'emoji',
-        'checklist', 'mark', 'html', 'markdown'  ,'fullscreen',
-
-    ],
-    textarea: '#editor',
-    placeholder: '',
-    defaultImage: './logo.png',
-    imageButton: ['upload'],
-    pasteImage:true,
-    upload: {
-        url: '/article/upload',
-        params: {_token: ""},
-        fileKey: 'file',
-        leaveConfirm: '正在上传文件..',
-        connectionCount: 20
-    },
-    emoji: {
-        imagePath: './emoji/'
-    },
-});
 
 function getHtmlContent(){
     return $(".simditor-body").html();

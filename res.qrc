@@ -1,2 +1,40 @@
-<!DOCTYPE RCC>
-<RCC version="1.0"/>
+<RCC>
+    <qresource prefix="/">
+        <file>res/exportHtml/entry_content.html</file>
+        <file>res/exportHtml/entry_list.html</file>
+        <file>res/exportHtml/frame_dict_content.html</file>
+        <file>res/exportHtml/frame_dict_title.html</file>
+        <file>res/exportHtml/index.html</file>
+        <file>res/html/index.html</file>
+        <file>res/html/index_list.html</file>
+        <file>res/html/item.html</file>
+        <file>res/img/check.png</file>
+        <file>res/img/dict_ico.png</file>
+        <file>res/img/Next.png</file>
+        <file>res/img/Previous.png</file>
+        <file>res/img/scale_down.png</file>
+        <file>res/img/scale_up.png</file>
+        <file>res/img/view_off.png</file>
+        <file>res/img/view_on.png</file>
+        <file>res/other/file_to_copy.txt</file>
+        <file>res/exportHtml/jquery.jsx</file>
+        <file>res/usage/app.css</file>
+        <file>res/usage/icomoon.eot</file>
+        <file>res/usage/icomoon.svg</file>
+        <file>res/usage/icomoon.ttf</file>
+        <file>res/usage/icomoon.woff</file>
+        <file>res/usage/markdown.html</file>
+        <file>res/usage/mobile.css</file>
+        <file>res/usage/simditor-checklist.css</file>
+        <file>res/usage/simditor-emoji.css</file>
+        <file>res/usage/simditor-fullscreen.css</file>
+        <file>res/usage/simditor-html.css</file>
+        <file>res/usage/simditor-markdown.css</file>
+        <file>res/usage/simditor.css</file>
+        <file>res/usage/importExport.html</file>
+        <file>res/usage/guide.html</file>
+        <file>favoricon.ico</file>
+        <file>res/other/punycode.jsx</file>
+        <file>res/img/option.png</file>
+    </qresource>
+</RCC>

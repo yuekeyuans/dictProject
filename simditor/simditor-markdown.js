@@ -25,6 +25,15 @@ SimditorMarkdown = (function(superClass) {
     return SimditorMarkdown.__super__.constructor.apply(this, arguments);
   }
 
+    SimditorMarkdown.i18n = {
+      'zh-CN': {
+        markdown: '标记语言'
+      },
+      'en-US': {
+        markdown: 'markdown'
+      }
+    };
+
   SimditorMarkdown.prototype.name = 'markdown';
 
   SimditorMarkdown.prototype.icon = 'markdown';

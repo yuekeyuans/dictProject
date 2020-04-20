@@ -1,5 +1,4 @@
 'use strict';
-/** Highest positive signed 32-bit float value */
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
@@ -42,27 +41,10 @@ var errors = {
 var baseMinusTMin = base - tMin;
 var floor = Math.floor;
 var stringFromCharCode = String.fromCharCode;
-/*--------------------------------------------------------------------------*/
-
-/**
- * A generic error utility function.
- * @private
- * @param {String} type The error type.
- * @returns {Error} Throws a `RangeError` with the applicable error message.
- */
 
 function error(type) {
   throw new RangeError(errors[type]);
 }
-/**
- * A generic `Array#map` utility function.
- * @private
- * @param {Array} array The array to iterate over.
- * @param {Function} callback The function that gets called for every array
- * item.
- * @returns {Array} A new array of values returned by the callback function.
- */
-
 
 function map(array, fn) {
   var result = [];
@@ -74,17 +56,6 @@ function map(array, fn) {
 
   return result;
 }
-/**
- * A simple `Array#map`-like wrapper to work with domain name strings or email
- * addresses.
- * @private
- * @param {String} domain The domain name or email address.
- * @param {Function} callback The function that gets called for every
- * character.
- * @returns {Array} A new string of characters returned by the callback
- * function.
- */
-
 
 function mapDomain(string, fn) {
   var parts = string.split('@');
@@ -103,20 +74,6 @@ function mapDomain(string, fn) {
   var encoded = map(labels, fn).join('.');
   return result + encoded;
 }
-/**
- * Creates an array containing the numeric code points of each Unicode
- * character in the string. While JavaScript uses UCS-2 internally,
- * this function will convert a pair of surrogate halves (each of which
- * UCS-2 exposes as separate characters) into a single code point,
- * matching UTF-16.
- * @see `punycode.ucs2.encode`
- * @see <https://mathiasbynens.be/notes/javascript-encoding>
- * @memberOf punycode.ucs2
- * @name decode
- * @param {String} string The Unicode input string (UCS-2).
- * @returns {Array} The new array of code points.
- */
-
 
 function ucs2decode(string) {
   var output = [];
@@ -146,31 +103,12 @@ function ucs2decode(string) {
 
   return output;
 }
-/**
- * Creates a string based on an array of numeric code points.
- * @see `punycode.ucs2.decode`
- * @memberOf punycode.ucs2
- * @name encode
- * @param {Array} codePoints The array of numeric code points.
- * @returns {String} The new Unicode string (UCS-2).
- */
-
 
 function ucs2encode(array) {
   return String.fromCodePoint.apply(String, _toConsumableArray(array));
 };
-/**
- * Converts a basic code point into a digit/integer.
- * @see `digitToBasic()`
- * @private
- * @param {Number} codePoint The basic numeric code point value.
- * @returns {Number} The numeric value of a basic code point (for use in
- * representing integers) in the range `0` to `base - 1`, or `base` if
- * the code point does not represent a value.
- */
 
-
-var basicToDigit = function basicToDigit(codePoint) {
+function basicToDigit(codePoint) {
   if (codePoint - 0x30 < 0x0A) {
     return codePoint - 0x16;
   }
@@ -289,152 +227,152 @@ function decode(input) {
   return String.fromCodePoint.apply(String, output);
 };
 
-function encode(input) {
-  var output = []; // Convert the input in UCS-2 to an array of Unicode code points.
+// function encode(input) {
+//   var output = []; // Convert the input in UCS-2 to an array of Unicode code points.
 
-  input = ucs2decode(input); // Cache the length.
+//   input = ucs2decode(input); // Cache the length.
 
-  var inputLength = input.length; // Initialize the state.
+//   var inputLength = input.length; // Initialize the state.
 
-  var n = initialN;
-  var delta = 0;
-  var bias = initialBias; // Handle the basic code points.
+//   var n = initialN;
+//   var delta = 0;
+//   var bias = initialBias; // Handle the basic code points.
 
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
+//   var _iteratorNormalCompletion = true;
+//   var _didIteratorError = false;
+//   var _iteratorError = undefined;
 
-  try {
-    for (var _iterator = input[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var _currentValue2 = _step.value;
+//   try {
+//     for (var _iterator = input[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+//       var _currentValue2 = _step.value;
 
-      if (_currentValue2 < 0x80) {
-        output.push(stringFromCharCode(_currentValue2));
-      }
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator.return != null) {
-        _iterator.return();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
+//       if (_currentValue2 < 0x80) {
+//         output.push(stringFromCharCode(_currentValue2));
+//       }
+//     }
+//   } catch (err) {
+//     _didIteratorError = true;
+//     _iteratorError = err;
+//   } finally {
+//     try {
+//       if (!_iteratorNormalCompletion && _iterator.return != null) {
+//         _iterator.return();
+//       }
+//     } finally {
+//       if (_didIteratorError) {
+//         throw _iteratorError;
+//       }
+//     }
+//   }
 
-  var basicLength = output.length;
-  var handledCPCount = basicLength; // `handledCPCount` is the number of code points that have been handled;
-  // `basicLength` is the number of basic code points.
-  // Finish the basic string with a delimiter unless it's empty.
+//   var basicLength = output.length;
+//   var handledCPCount = basicLength; // `handledCPCount` is the number of code points that have been handled;
+//   // `basicLength` is the number of basic code points.
+//   // Finish the basic string with a delimiter unless it's empty.
 
-  if (basicLength) {
-    output.push(delimiter);
-  } // Main encoding loop:
+//   if (basicLength) {
+//     output.push(delimiter);
+//   } // Main encoding loop:
 
 
-  while (handledCPCount < inputLength) {
-    // All non-basic code points < n have been handled already. Find the next
-    // larger one:
-    var m = maxInt;
-    var _iteratorNormalCompletion2 = true;
-    var _didIteratorError2 = false;
-    var _iteratorError2 = undefined;
+//   while (handledCPCount < inputLength) {
+//     // All non-basic code points < n have been handled already. Find the next
+//     // larger one:
+//     var m = maxInt;
+//     var _iteratorNormalCompletion2 = true;
+//     var _didIteratorError2 = false;
+//     var _iteratorError2 = undefined;
 
-    try {
-      for (var _iterator2 = input[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-        var currentValue = _step2.value;
+//     try {
+//       for (var _iterator2 = input[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+//         var currentValue = _step2.value;
 
-        if (currentValue >= n && currentValue < m) {
-          m = currentValue;
-        }
-      } // Increase `delta` enough to advance the decoder's <n,i> state to <m,0>,
-      // but guard against overflow.
+//         if (currentValue >= n && currentValue < m) {
+//           m = currentValue;
+//         }
+//       } // Increase `delta` enough to advance the decoder's <n,i> state to <m,0>,
+//       // but guard against overflow.
 
-    } catch (err) {
-      _didIteratorError2 = true;
-      _iteratorError2 = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-          _iterator2.return();
-        }
-      } finally {
-        if (_didIteratorError2) {
-          throw _iteratorError2;
-        }
-      }
-    }
+//     } catch (err) {
+//       _didIteratorError2 = true;
+//       _iteratorError2 = err;
+//     } finally {
+//       try {
+//         if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
+//           _iterator2.return();
+//         }
+//       } finally {
+//         if (_didIteratorError2) {
+//           throw _iteratorError2;
+//         }
+//       }
+//     }
 
-    var handledCPCountPlusOne = handledCPCount + 1;
+//     var handledCPCountPlusOne = handledCPCount + 1;
 
-    if (m - n > floor((maxInt - delta) / handledCPCountPlusOne)) {
-      error('overflow');
-    }
+//     if (m - n > floor((maxInt - delta) / handledCPCountPlusOne)) {
+//       error('overflow');
+//     }
 
-    delta += (m - n) * handledCPCountPlusOne;
-    n = m;
-    var _iteratorNormalCompletion3 = true;
-    var _didIteratorError3 = false;
-    var _iteratorError3 = undefined;
+//     delta += (m - n) * handledCPCountPlusOne;
+//     n = m;
+//     var _iteratorNormalCompletion3 = true;
+//     var _didIteratorError3 = false;
+//     var _iteratorError3 = undefined;
 
-    try {
-      for (var _iterator3 = input[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-        var _currentValue = _step3.value;
+//     try {
+//       for (var _iterator3 = input[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+//         var _currentValue = _step3.value;
 
-        if (_currentValue < n && ++delta > maxInt) {
-          error('overflow');
-        }
+//         if (_currentValue < n && ++delta > maxInt) {
+//           error('overflow');
+//         }
 
-        if (_currentValue == n) {
-          // Represent delta as a generalized variable-length integer.
-          var q = delta;
+//         if (_currentValue == n) {
+//           // Represent delta as a generalized variable-length integer.
+//           var q = delta;
 
-          for (var k = base;;
-          /* no condition */
-          k += base) {
-            var t = k <= bias ? tMin : k >= bias + tMax ? tMax : k - bias;
+//           for (var k = base;;
+//           /* no condition */
+//           k += base) {
+//             var t = k <= bias ? tMin : k >= bias + tMax ? tMax : k - bias;
 
-            if (q < t) {
-              break;
-            }
+//             if (q < t) {
+//               break;
+//             }
 
-            var qMinusT = q - t;
-            var baseMinusT = base - t;
-            output.push(stringFromCharCode(digitToBasic(t + qMinusT % baseMinusT, 0)));
-            q = floor(qMinusT / baseMinusT);
-          }
+//             var qMinusT = q - t;
+//             var baseMinusT = base - t;
+//             output.push(stringFromCharCode(digitToBasic(t + qMinusT % baseMinusT, 0)));
+//             q = floor(qMinusT / baseMinusT);
+//           }
 
-          output.push(stringFromCharCode(digitToBasic(q, 0)));
-          bias = adapt(delta, handledCPCountPlusOne, handledCPCount == basicLength);
-          delta = 0;
-          ++handledCPCount;
-        }
-      }
-    } catch (err) {
-      _didIteratorError3 = true;
-      _iteratorError3 = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
-          _iterator3.return();
-        }
-      } finally {
-        if (_didIteratorError3) {
-          throw _iteratorError3;
-        }
-      }
-    }
+//           output.push(stringFromCharCode(digitToBasic(q, 0)));
+//           bias = adapt(delta, handledCPCountPlusOne, handledCPCount == basicLength);
+//           delta = 0;
+//           ++handledCPCount;
+//         }
+//       }
+//     } catch (err) {
+//       _didIteratorError3 = true;
+//       _iteratorError3 = err;
+//     } finally {
+//       try {
+//         if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
+//           _iterator3.return();
+//         }
+//       } finally {
+//         if (_didIteratorError3) {
+//           throw _iteratorError3;
+//         }
+//       }
+//     }
 
-    ++delta;
-    ++n;
-  }
-  return output.join('');
-};
+//     ++delta;
+//     ++n;
+//   }
+//   return output.join('');
+// };
 
 function toUnicode(input) {
   return mapDomain(input, function (string) {
@@ -447,3 +385,40 @@ function toASCII(input) {
     return regexNonASCII.test(string) ? 'xn--' + encode(string) : string;
   });
 };
+
+
+if (!String.fromCodePoint) (function(stringFromCharCode) {
+    var fromCodePoint = function(_) {
+      var codeUnits = [], codeLen = 0, result = "";
+      for (var index=0, len = arguments.length; index !== len; ++index) {
+        var codePoint = +arguments[index];
+        // correctly handles all cases including `NaN`, `-Infinity`, `+Infinity`
+        // The surrounding `!(...)` is required to correctly handle `NaN` cases
+        // The (codePoint>>>0) === codePoint clause handles decimals and negatives
+        if (!(codePoint < 0x10FFFF && (codePoint>>>0) === codePoint))
+          throw RangeError("Invalid code point: " + codePoint);
+        if (codePoint <= 0xFFFF) { // BMP code point
+          codeLen = codeUnits.push(codePoint);
+        } else { // Astral code point; split in surrogate halves
+          // https://mathiasbynens.be/notes/javascript-encoding#surrogate-formulae
+          codePoint -= 0x10000;
+          codeLen = codeUnits.push(
+            (codePoint >> 10) + 0xD800,  // highSurrogate
+            (codePoint % 0x400) + 0xDC00 // lowSurrogate
+          );
+        }
+        if (codeLen >= 0x3fff) {
+          result += stringFromCharCode.apply(null, codeUnits);
+          codeUnits.length = 0;
+        }
+      }
+      return result + stringFromCharCode.apply(null, codeUnits);
+    };
+    try { // IE 8 only supports `Object.defineProperty` on DOM elements
+      Object.defineProperty(String, "fromCodePoint", {
+        "value": fromCodePoint, "configurable": true, "writable": true
+      });
+    } catch(e) {
+      String.fromCodePoint = fromCodePoint;
+    }
+}(String.fromCharCode));

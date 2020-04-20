@@ -6,6 +6,7 @@ SideBarSelectDialog::SideBarSelectDialog(QWidget *parent) :
     ui(new Ui::SideBarSelectDialog)
 {
     ui->setupUi(this);
+    this->setModal (true);
 }
 
 SideBarSelectDialog::~SideBarSelectDialog()

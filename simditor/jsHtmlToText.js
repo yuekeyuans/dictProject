@@ -51,7 +51,7 @@ function htmlToText(html) {
  		.replace(/&([^;]+);/g, decodeHtmlEntity );
 }
 
-function decodeHtmlEntity = function(m, n) {
+function decodeHtmlEntity(m, n) {
 	// Determine the character code of the entity. Range is 0 to 65535
 	// (characters in JavaScript are Unicode, and entities can represent
 	// Unicode characters).

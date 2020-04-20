@@ -94,6 +94,10 @@
   content: '\f013';
 }
 
+.simditor-icon-redo:before {
+  content: url("redo.svg");
+}
+
 .simditor-icon-smile-o:before {
   content: '\f014';
 }
@@ -412,8 +416,9 @@
   font-size: 0;
   margin: 6px 0;
 }
+
 .simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color {
-  width: 96px;
+  width: 144px;
 }
 .simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list {
   height: 40px;
@@ -439,26 +444,171 @@
   background: #333333;
 }
 .simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-1 {
-  background: #E33737;
+  background: #ff0000;
 }
 .simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-2 {
-  background: #e28b41;
+  background: #ffff00;
 }
 .simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-3 {
-  background: #c8a732;
+  background: #008b8b;
 }
 .simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-4 {
-  background: #209361;
+  background: #7fffd4;
 }
 .simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-5 {
-  background: #418caf;
+  background: #fffafa;
 }
 .simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-6 {
-  background: #aa8773;
+  background: #0000ff;
 }
 .simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-7 {
-  background: #999999;
+  background: #8a2be2;
 }
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-8 {
+  background: #a52a2a;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-9 {
+  background: #d2b48c;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-10 {
+  background: #7fff00;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-11 {
+  background: #800000;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-12 {
+  background: #ff7f50;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-13 {
+  background: #6495ed;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-14 {
+  background: #dc143c;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-15 {
+  background: #00ffff;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-16 {
+  background: #b8860b;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-17 {
+  background: #a9a9a9;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-18 {
+  background: #006400;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-19 {
+  background: #ffdab9;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-20 {
+  background: #8b008b;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-21 {
+  background: #ff00ff;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-22 {
+  background: #483d8b;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-color .color-list li .font-color-23 {
+  background: #2f4f4f;
+}
+
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor {
+  width: 144px;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list {
+  height: 40px;
+  margin: 10px 6px 6px 10px;
+  padding: 0;
+  min-width: 0;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li {
+  float: left;
+  margin: 0 4px 4px 0;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color {
+  display: block;
+  width: 16px;
+  height: 16px;
+  background: #dfdfdf;
+  border-radius: 2px;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color:hover {
+  opacity: 0.8;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color.font-color-default {
+  background: #333333;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-1 {
+  background: #ff0000;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-2 {
+  background: #ffff00;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-3 {
+  background: #008b8b;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-4 {
+  background: #7fffd4;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-5 {
+  background: #fffafa;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-6 {
+  background: #0000ff;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-7 {
+  background: #8a2be2;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-8 {
+  background: #a52a2a;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-9 {
+  background: #d2b48c;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-10 {
+  background: #7fff00;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-11 {
+  background: #800000;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-12 {
+  background: #ff7f50;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-13 {
+  background: #6495ed;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-14 {
+  background: #dc143c;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-15 {
+  background: #00ffff;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-16 {
+  background: #b8860b;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-17 {
+  background: #a9a9a9;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-18 {
+  background: #006400;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-19 {
+  background: #ffdab9;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-20 {
+  background: #8b008b;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-21 {
+  background: #ff00ff;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-22 {
+  background: #483d8b;
+}
+.simditor .simditor-toolbar .toolbar-menu.toolbar-menu-bgcolor .color-list li .font-color-23 {
+  background: #2f4f4f;
+}
+
 .simditor .simditor-toolbar .toolbar-menu.toolbar-menu-table .menu-create-table {
   background: #ffffff;
   padding: 1px;

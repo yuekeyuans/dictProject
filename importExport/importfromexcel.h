@@ -2,12 +2,16 @@
 #define IMPORTFROMEXCEL_H
 
 #include <QObject>
+#include <QThread>
 
-class ImportFromExcel : public QObject
+class ImportFromExcel : public QThread
 {
     Q_OBJECT
 public:
     explicit ImportFromExcel(QObject *parent = nullptr);
+    void run();
+    void process();
+
 
 signals:
 

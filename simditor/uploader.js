@@ -102,7 +102,7 @@ Uploader = (function(superClass) {
       return;
     }
     this.files.push(file);
-    this._xhrUpload(file);
+    //this._xhrUpload(file);
     return this.uploading = true;
   };
 

@@ -1,14 +1,32 @@
-﻿#include "appsqlite.h"
+#include "appsqlite.h"
 #include <QtSql>
 #include "sqlitesource.h"
 #include "QDir"
 
+QString AppSqlite::dbFile = "";
+QString AppSqlite::dictName = "";
+
 AppSqlite::AppSqlite()
 {
-    assert(_appSqlite == nullptr && "only one instance allowed");
+    // 如果没有文件，返回
+    if(dbFile == ""){
+        return;
+    }
+
+    //关闭原先数据库
+    if(_appSqlite != nullptr){
+        if(_appSqlite->database.isOpen()){
+            _appSqlite->database.close();
+        }
+        delete _appSqlite;
+        _appSqlite = nullptr;
+    }
 
     if(openDatabase()){
         initDatabase();
+    }
+    if(dictName != ""){
+        initDictTable();
     }
     _appSqlite = this;
 }
@@ -19,10 +37,9 @@ bool AppSqlite::openDatabase(){
     if (!database.open())    {
         qWarning(qPrintable(QString("Connect database %1 error, %2").arg(dbFile).arg(database.lastError().text())));
         return false;
-    }else{
-        qWarning(qPrintable(QString("Connect database %1 succeed.").arg(dbFile)));
-        return true;
     }
+    qWarning(qPrintable(QString("Connect database %1 succeed.").arg(dbFile)));
+    return true;
 }
 
 bool AppSqlite::initDatabase(){
@@ -31,29 +48,29 @@ bool AppSqlite::initDatabase(){
     {
         QSqlQuery sql_query;
 
-        //创建表dict 表
-       if(!sql_query.exec(SQL_CREATE_DICT_TABLE))
-        {
+       if(!sql_query.exec(SQL_CREATE_DICT_TABLE)){  //创建表dict 表
             qWarning("[SQL] %s",qPrintable(sql_query.lastError().text()));
             return false;
         }
-       //创建表dict 表
-      if(!sql_query.exec(SQL_CREATE_ENTRY_TABLE))
-       {
+       if(!sql_query.exec(SQL_CREATE_ENTRY_TABLE)){ //创建表entry 表
            qWarning("[SQL] %s",qPrintable(sql_query.lastError().text()));
            return false;
        }
         return true;
     }
-    else
-    {
-        qWarning("Init database failed,database is not open.");
-        return false;
-    }
+    qWarning("Init database failed,database is not open.");
+    return false;
 }
 
-void AppSqlite::quit(){
-    if(database.isOpen()){
-        database.close();
-    }
+bool AppSqlite::initDictTable(){
+    QSqlQuery query;
+    query.prepare("INSERT INTO [dict]([id],[title],[description],[image],[html]) VALUES (1,:title,'','','')");
+    query.bindValue(":title", dictName);
+    bool value = query.exec();
+    qDebug() << "create" << dictName << " dict complete" << value;
+    return value;
+}
+
+AppSqlite::~AppSqlite(){
+
 }

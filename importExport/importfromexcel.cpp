@@ -1,6 +1,10 @@
 #include "importfromexcel.h"
 
-ImportFromExcel::ImportFromExcel(QObject *parent) : QObject(parent)
+ImportFromExcel::ImportFromExcel(QObject *parent) : QThread(parent)
 {
+
+}
+
+void ImportFromExcel::run(){
 
 }

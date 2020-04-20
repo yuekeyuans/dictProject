@@ -1,24 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow" >
-  <property name="geometry" >
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>629</width>
+    <height>360</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QMenuBar" name="menuBar" />
-  <widget class="QToolBar" name="mainToolBar" />
-  <widget class="QWidget" name="centralWidget" />
-  <widget class="QStatusBar" name="statusBar" />
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <property name="spacing">
+     <number>6</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <layout class="QHBoxLayout" name="searchBoxLayout">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
+        <property name="spacing">
+         <number>7</number>
+        </property>
+        <property name="sizeConstraint">
+         <enum>QLayout::SetFixedSize</enum>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" name="menuContainer"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="functionLayout">
+      <property name="spacing">
+       <number>3</number>
+      </property>
+      <item>
+       <widget class="QStackedWidget" name="stackWidget">
+        <property name="currentIndex">
+         <number>-1</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>629</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="dictMenu">
+    <property name="title">
+     <string>字典</string>
+    </property>
+    <addaction name="createDict"/>
+    <addaction name="openDict"/>
+    <addaction name="closeDict"/>
+    <addaction name="separator"/>
+    <addaction name="actionDefaultPage"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menu_item">
+    <property name="title">
+     <string>条目</string>
+    </property>
+    <addaction name="addItem"/>
+    <addaction name="deleteItem"/>
+   </widget>
+   <widget class="QMenu" name="menu_import">
+    <property name="title">
+     <string>导入</string>
+    </property>
+    <addaction name="actionImportExcel"/>
+   </widget>
+   <widget class="QMenu" name="menu_export">
+    <property name="title">
+     <string>导出</string>
+    </property>
+    <addaction name="actionpdb"/>
+    <addaction name="actionexcel"/>
+    <addaction name="actionhtml"/>
+    <addaction name="actiondicthtml"/>
+   </widget>
+   <widget class="QMenu" name="menu_5">
+    <property name="title">
+     <string>帮助</string>
+    </property>
+    <addaction name="actionmarkdown"/>
+    <addaction name="actionimportexport"/>
+    <addaction name="actionguide"/>
+   </widget>
+   <addaction name="dictMenu"/>
+   <addaction name="menu_item"/>
+   <addaction name="menu_import"/>
+   <addaction name="menu_export"/>
+   <addaction name="menu_5"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="floatable">
+    <bool>false</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="openDict">
+   <property name="text">
+    <string>打开字典</string>
+   </property>
+  </action>
+  <action name="closeDict">
+   <property name="text">
+    <string>关闭字典</string>
+   </property>
+  </action>
+  <action name="importDict">
+   <property name="text">
+    <string>导入字典</string>
+   </property>
+  </action>
+  <action name="exportDict">
+   <property name="text">
+    <string>导出字典</string>
+   </property>
+  </action>
+  <action name="actionmarkdown">
+   <property name="text">
+    <string>标记语言</string>
+   </property>
+  </action>
+  <action name="actionimportexport">
+   <property name="text">
+    <string>导入导出</string>
+   </property>
+  </action>
+  <action name="actionexport">
+   <property name="text">
+    <string>导出</string>
+   </property>
+  </action>
+  <action name="createDict">
+   <property name="text">
+    <string>创建字典</string>
+   </property>
+  </action>
+  <action name="addItem">
+   <property name="text">
+    <string>添加条目</string>
+   </property>
+  </action>
+  <action name="deleteItem">
+   <property name="text">
+    <string>删除条目</string>
+   </property>
+  </action>
+  <action name="actionDefaultPage">
+   <property name="text">
+    <string>默认页</string>
+   </property>
+  </action>
+  <action name="actionpdb">
+   <property name="text">
+    <string>pdb 源文件</string>
+   </property>
+  </action>
+  <action name="actionexcel">
+   <property name="text">
+    <string>excel 表格</string>
+   </property>
+  </action>
+  <action name="actionhtml">
+   <property name="text">
+    <string>html 网页</string>
+   </property>
+  </action>
+  <action name="actiondicthtml">
+   <property name="text">
+    <string>dicthtml 字典</string>
+   </property>
+  </action>
+  <action name="actionsugarDict">
+   <property name="text">
+    <string>sugarDict</string>
+   </property>
+  </action>
+  <action name="actioncompactDict">
+   <property name="text">
+    <string>compact dict</string>
+   </property>
+  </action>
+  <action name="actionImportExcel">
+   <property name="text">
+    <string>excel</string>
+   </property>
+  </action>
+  <action name="actionguide">
+   <property name="text">
+    <string>程序指南</string>
+   </property>
+  </action>
  </widget>
- <layoutDefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
+ <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections/>
 </ui>

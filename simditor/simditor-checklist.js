@@ -22,6 +22,15 @@ var ChecklistButton,
 ChecklistButton = (function(superClass) {
   extend(ChecklistButton, superClass);
 
+  ChecklistButton.i18n = {
+    'zh-CN': {
+        checklist: '复选框'
+    },
+    'en-US': {
+        checklist: 'checklist'
+  }
+  };
+
   ChecklistButton.prototype.type = 'ul.simditor-checklist';
 
   ChecklistButton.prototype.name = 'checklist';

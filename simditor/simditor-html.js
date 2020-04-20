@@ -26,6 +26,15 @@ HTMLButton = (function(superClass) {
     return HTMLButton.__super__.constructor.apply(this, arguments);
   }
 
+  HTMLButton.i18n = {
+      'zh-CN': {
+        html: '源代码'
+      },
+      'en-US': {
+        html: 'html'
+      }
+    };
+
   HTMLButton.prototype.name = 'html';
 
   HTMLButton.prototype.icon = 'html5';
