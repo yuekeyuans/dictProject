@@ -14,7 +14,7 @@
 #include "importExport/export.h"
 #include "importExport/import.h"
 #include <QApplication>
-#include "sidebar.h"
+#include "DictSideBar/sidebar.h"
 
 namespace Ui {
 class MainWindow;
@@ -30,8 +30,8 @@ public:
 
 public slots:
     void _createNewDict();
-    void _openDict(QString);
-    void _closeDict();
+    void slotOpenDict(QString);
+    void slotCloseDict();
     void _reshapeSubmenu(QString name = "");
 
 private:
@@ -48,37 +48,33 @@ private:
     void initSideBar();
     void initMenu();
 
-
-    Ui::MainWindow *ui;
+    Ui::MainWindow *ui{nullptr};
     QList<Router> routers;
-    QMap<int, QString>* sortAction;
-    QList<QPair<int, QString>>* items;
+    QMap<int, QString>* sortAction{nullptr};
+    QList<QPair<int, QString>>* items{nullptr};
 
-    DefaultPage* _defaultPage;
-    HelpPage* _helpPage;
-    LoadDict* _loadDict;
-    addItem* _addItem;
-    SideBar* _sideBar;
+    DefaultPage* _defaultPage{nullptr};
+    HelpPage* _helpPage{nullptr};
+    LoadDict* _loadDict{nullptr};
+    addItem* _addItem{nullptr};
+    SideBar* _sideBar{nullptr};
 
-    Import* imports;
-    Export* exports;
+    Import* imports{nullptr};
+    Export* exports{nullptr};
 
-    Setting* globalSetting;
-    QList<QAction*> menuActions;
+    Setting* globalSetting{nullptr};
+    QList<QAction*>* menuActions{nullptr};
 
-    bool loadFinish;
+    QIcon check{":/res/img/check.png"};
+    bool loadFinish{false};
 
 private slots:
     //跳转页面
-    void _jump(const QString&, const QString& = "", const QString& = "");
-    // 跳转 html
-    void _jumpPage(QString);
+    void _jump(const QString&, QString = "", QString = "");
+
 signals:
     void emitLoadDict();
     void emitDictChanged();
-
-    // sidebar
-    void emitUpdateSideBarItems();
 };
 
 #endif // MAINWINDOW_H

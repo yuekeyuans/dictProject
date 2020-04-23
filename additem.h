@@ -21,25 +21,18 @@ public:
 
 public slots:
     void save();
-
     void deletePage();
-    void viewModeChanged();
-    virtual void setDefaultValue(const QString& val1 = "", const QString& = ""){
-        if(val1 != ""){
-            updatePage (val1);
-        }
-    }
-
+    void setDefaultValue(QString val1 = "",QString = "");
 
 signals:
     void entryChanged();
-    void jumps(QString);
+    void emitJumpPage(QString);
 
 private:
     Ui::addItem *ui;
     WebViewWithEditor* editor;
     EntryModel* entry;
-    void updatePage(QString name);
+    void updatePage(int id = -1);
 };
 
 #endif // ADDITEM_H

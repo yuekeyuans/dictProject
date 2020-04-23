@@ -7,28 +7,54 @@
 
 EntryModel::EntryModel(QObject *parent) : QObject(parent)
 {
-    sorts = new QMap<QString, QString>();
-    sorts->insert(tr("timeUp"), "order by createDate asc");
-    sorts->insert(tr("timeDown"), "order by createDate desc");
-    sorts->insert(tr("nameUp"), "order by entry asc");
-    sorts->insert(tr("nameDown"), "order by entry desc");
-    sorts->insert(tr("lastViewUp"), "order by lastViewDate desc");
-    sorts->insert(tr("lastUpdateUp"), "order by lastUpdateDate desc");
     textDocument = new QTextDocument;
 }
 
-QList<EntryModel*>* EntryModel::loadAll(){
+EntryModel::EntryModel(QString entry, QString html):EntryModel(){
+    this->entry = entry;
+    this->html = html;
+}
+EntryModel::EntryModel(int id, QString entry, QString html):EntryModel(){
+    this->id = id;
+    this->entry = entry;
+    this->html = html;
+}
+EntryModel::EntryModel(int id):EntryModel(){
+    this->id = id;
+    load ();
+}
+EntryModel::EntryModel(QString name):EntryModel(){
+    this->entry = name;
+    load ();
+}
+
+QList<EntryModel*>* EntryModel::loadAll (QString keyWord, bool allTextSearch, QString sortType){
     QList<EntryModel*>* list = new QList<EntryModel*>();
     QSqlQuery query;
-    query.exec("select * from entry");
+
+    QString whereArgs = "";
+    if(keyWord.trimmed() != ""){
+        if(allTextSearch){
+            whereArgs = QString(" where entry like '%"+keyWord.trimmed()+"%' or text like '%" + keyWord.trimmed() + "%'");
+        }else{
+            whereArgs = QString(" where entry like '%"+keyWord.trimmed()+"%' ");
+        }
+    }
+    QString orderBy = " order by sortId asc ";
+    QString sql = "select * from entry ";
+    sql.append(whereArgs);
+    sql.append(orderBy);
+    query.exec(sql);
     while(query.next()){
         EntryModel* model = new EntryModel();
         model->id = query.value("id").toInt();
+        model->sortId = query.value ("sortId").toInt ();
         model->text = query.value("text").toString();
         model->mkdown = query.value("mkdown").toString();
         model->entry = query.value("entry").toString();
         model->html = query.value("html").toString();
         model->createDate = query.value("createDate").toString();
+        model->isVisiable = query.value ("visiable").toString () == "" ? true :false;
         model->lastViewDate = query.value("lastViewDate").toString();
         model->lastUpdateDate = query.value("lastUpdateDate").toString();
         list->append(model);
@@ -36,37 +62,17 @@ QList<EntryModel*>* EntryModel::loadAll(){
     return list;
 }
 
-// TODO: 这里时间的比较是直接比较的，不知道会不会有影响
-void EntryModel::loadAll(QList<QPair<int, QString>>* list, QString keyWord, QString sortType){
-    list->clear();
-    QSqlQuery query;
-
-    QString whereArgs = "";
-    if(keyWord.trimmed() != ""){
-        whereArgs = QString(" where entry like '%"+keyWord.trimmed()+"%' ");
-    }
-    QString orderBy = sorts->value(sortType);
-    QString sql = "select id, entry from entry ";
-    sql.append(whereArgs);
-    sql.append(orderBy);
-    query.exec(sql);
-    while(query.next()){
-        QPair<int, QString> pair;
-        pair.first = query.value("id").toInt();
-        pair.second = query.value("entry").toString();
-        list->append(pair);
-    }
-}
-
 EntryModel* EntryModel::copyLoad(){
     EntryModel* model = new EntryModel();
     load();
     setLastViewDate();
     model->id = id;
+    model->sortId = sortId;
     model->entry = entry;
     model->text = text;
     model->html = html;
     model->mkdown =mkdown;
+    model->isVisiable = isVisiable;
     model->createDate = createDate;
     model->lastViewDate = lastViewDate;
     model->lastUpdateDate = lastUpdateDate;
@@ -86,10 +92,12 @@ void EntryModel::load(){
     query.exec();
     while(query.next()){
         id = query.value("id").toInt();
+        sortId = query.value ("sortId").toInt ();
         text = query.value("text").toString();
         mkdown = query.value("mkdown").toString();
         entry = query.value("entry").toString();
         html = query.value("html").toString();
+        isVisiable =  query.value ("visiable").toString () == "no" ? false:true;
         createDate = query.value("createDate").toString();
         lastViewDate = query.value("lastViewDate").toString();
         lastUpdateDate = query.value("lastUpdateDate").toString();
@@ -115,12 +123,15 @@ void EntryModel::insertOrUpdate(){
 void EntryModel::update(){
     setLastUpdateDate();
     QString sql = "UPDATE [entry] \
-            SET [entry] = :entry, [html] = :html WHERE  [id] = :id";
+            SET [entry] = :entry, [html] = :html,[sortId] = :sortId, [visiable] = :visiable \
+            WHERE  [id] = :id";
     QSqlQuery query;
     query.prepare(sql);
     query.bindValue(":id", id);
     query.bindValue(":entry", entry);
     query.bindValue(":html", html);
+    query.bindValue (":sortId", sortId);
+    query.bindValue (":visiable", isVisiable ? "yes":"no");
     query.exec();
     textDocument->setHtml(html);
     setText(textDocument->toPlainText());
@@ -128,20 +139,23 @@ void EntryModel::update(){
 
 void EntryModel::insert(){
     id = getNextId();
+    sortId = id;
     createDate = QDateTime::currentDateTime().toString();
     lastViewDate = createDate;
     lastUpdateDate = createDate;
-    QString sql = "INSERT INTO [entry]( [id], [entry], [text], [mkdown], [html], [createdate], [lastUpdateDate], [lastViewDate]) \
-                   VALUES ( :id, :entry, :text, :mkdown, :html, :createDate, :lastUpdateDate, :lastViewDate)";
+    QString sql = "INSERT INTO [entry]( [id], [sortId], [entry], [text], [mkdown], [html],[visiable], [createdate], [lastUpdateDate], [lastViewDate]) \
+                   VALUES ( :id, :sortId, :entry, :text, :mkdown, :html, :visiable, :createDate, :lastUpdateDate, :lastViewDate)";
 
     QSqlQuery query;
     query.prepare(sql);
     query.bindValue(":id", id);
+    query.bindValue (":sortId", sortId);
     query.bindValue(":entry", entry);
     query.bindValue(":html", html);
     query.bindValue(":text", text);
     query.bindValue(":mkdown", mkdown);
     query.bindValue(":createDate", createDate);
+    query.bindValue (":visiable", isVisiable ?"yes":"no");
     query.bindValue(":lastUpdateDate", lastUpdateDate);
     query.bindValue(":lastViewDate", lastViewDate);
     query.exec();
@@ -208,7 +222,6 @@ void EntryModel::setText(QString text){
     query.exec();
 }
 
-
 void EntryModel::setMkDown(QString mkdown){
     this->mkdown = mkdown;
     if(id==-1){
@@ -246,7 +259,39 @@ void EntryModel::setLastUpdateDate(){
     query.exec();
 }
 
+int EntryModel::getTotalCount (){
+    QSqlQuery query(AppSqlite::instance()->database);
+    query.exec("select * from entry");
+    auto model = new QSqlQueryModel();
+    model->setQuery(query);
+    return model->rowCount();
+}
+
+void EntryModel::setVisiable (bool visiable){
+    this->isVisiable = visiable;
+    this->isVisiable = visiable;
+    QString sql = "UPDATE [entry] \
+            SET [visiable] = :visiable \
+            WHERE  [id] = :id";
+    QSqlQuery query;
+    query.prepare(sql);
+    query.bindValue(":id", id);
+    query.bindValue (":visiable", this->isVisiable?"yes":"no");
+    query.exec ();
+}
+
+void EntryModel::setSortId(int sortId){
+    this->sortId = sortId;
+    QString sql = "UPDATE [entry] \
+            SET [sortId] = :sortId \
+            WHERE  [id] = :id";
+    QSqlQuery query;
+    query.prepare(sql);
+    query.bindValue(":id", id);
+    query.bindValue (":sortId", this->sortId);
+    query.exec ();
+}
+
 EntryModel::~EntryModel(){
-    delete sorts;
     delete textDocument;
 }

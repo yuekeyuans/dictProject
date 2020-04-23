@@ -6,6 +6,7 @@
 QString AppSqlite::dbFile = "";
 QString AppSqlite::dictName = "";
 
+
 AppSqlite::AppSqlite()
 {
     // 如果没有文件，返回
@@ -67,7 +68,6 @@ bool AppSqlite::initDictTable(){
     query.prepare("INSERT INTO [dict]([id],[title],[description],[image],[html]) VALUES (1,:title,'','','')");
     query.bindValue(":title", dictName);
     bool value = query.exec();
-    qDebug() << "create" << dictName << " dict complete" << value;
     return value;
 }
 

@@ -27,16 +27,12 @@ private:
     QString html = "";
 
 public slots:
-    void getPlainTextValue(function<void (QString)> = nullptr);
-    void setPlainTextValue(QString);
     void getHtmlValue(function<void (QString)> = nullptr);
     void setHtmlValue(QString);
-    void getMarkdownValue(function<void (QString)> = nullptr);
-    void setMarkdownValue(QString);
     void scaleUp();
     void scaleDown();
     void setUrl(QString url = nullptr);
-    void viewModeChanged();
+    void changeViewMode();
 
 public: signals:
     void jumps(QString);

@@ -22,9 +22,9 @@ public:
 //    }
 
 signals:
-    void createNewDict();
-    void openExistDict(QString dictName);
-    void openHelp();
+    void emitCreateNewDict();
+    void emitOpenExistDict(QString dictName);
+    void emitOpenHelp();
 
 public slots:
     void updatePage();

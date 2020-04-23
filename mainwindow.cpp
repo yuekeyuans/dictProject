@@ -20,7 +20,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->retranslateUi(this);
+
     globalSetting = new Setting();
+
     initMainPage();
     initMenu();
     initDictPage();
@@ -31,16 +33,10 @@ MainWindow::MainWindow(QWidget *parent) :
     initImportExport();
 }
 
-//@brief MainWindow::initMainPage 初始化 主页面
 void MainWindow::initMainPage(){
-    //按钮栏的隐藏
     ui->mainToolBar->hide();
 
-    //sideBar
-    _sideBar = new SideBar(this);
-    ui->menuContainer->addWidget (_sideBar);
-
-    // 子页面的路由
+    ui->menuContainer->addWidget (_sideBar = new SideBar(this));
     routers.append(Router("defaultPage", 0, _defaultPage = new DefaultPage(this)));
     routers.append(Router("loadDict", 1, _loadDict = new LoadDict(this)));
     routers.append(Router("help", 2, _helpPage = new HelpPage(this)));
@@ -53,21 +49,18 @@ void MainWindow::initMainPage(){
 
 // 初始化菜单栏
 void MainWindow::initMenu(){
+    //字典页
+    menuActions = new QList<QAction*>();
     QMap<QString, QString> map;
-    QIcon check(QIcon(":/res/img/check.png"));
     foreach(map, globalSetting->getSubMenu()){
         QAction* action = new QAction(check, map.value("name"), this);
         action->setIconVisibleInMenu(false);
-        menuActions.append(action);
+        menuActions->append(action);
         ui->dictMenu->addAction(action);
-        connect(action, &QAction::triggered, [=]{_openDict(map.value("name"));});
+        connect(action, &QAction::triggered, [=]{slotOpenDict(map.value("name"));});
     }
-
-    //关闭字典
-    connect(ui->closeDict, &QAction::triggered, this, &MainWindow::_closeDict);
-    //创建字典
+    connect(ui->closeDict, &QAction::triggered, this, &MainWindow::slotCloseDict);
     connect(ui->createDict, &QAction::triggered, this, &MainWindow::_createNewDict);
-    //跳转到默认页面
     connect(ui->actionDefaultPage, &QAction::triggered, [=]{_jump("defaultPage");});
 
     ui->menu_export->setEnabled(false);
@@ -79,23 +72,24 @@ void MainWindow::initMenu(){
 
 //@brief 初始化默认页面
 void MainWindow::initDefaultPage(){
-    connect(this->_defaultPage, &DefaultPage::createNewDict, this, &MainWindow::_createNewDict);
-    connect(this->_defaultPage, &DefaultPage::openExistDict, this, &MainWindow::_openDict);
-    connect(this->_defaultPage, &DefaultPage::openHelp, [=]{_jump("help", "help_guide");});
+    connect(this->_defaultPage, &DefaultPage::emitCreateNewDict, this, &MainWindow::_createNewDict);
+    connect(this->_defaultPage, &DefaultPage::emitOpenExistDict, this, &MainWindow::slotOpenDict);
+    connect(this->_defaultPage, &DefaultPage::emitOpenHelp, [=]{_jump("help", "help_guide");});
 }
 
 //@brief MainWindow::initDictPage 初始化字典的页面
 void MainWindow::initDictPage(){
     //加载字典
-    connect(this, &MainWindow::emitLoadDict, this->_loadDict, &LoadDict::load);
+    connect(this, &MainWindow::emitLoadDict, _loadDict, &LoadDict::load);
+    connect(this, &MainWindow::emitLoadDict, _sideBar, &SideBar::slotupdateMenuItems);
     //字典页跳转事件
-    connect(this->_loadDict, &LoadDict::jumps, this, &MainWindow::_jumpPage);
+    //connect(this->_loadDict, &LoadDict::jumps, this, &MainWindow::_jumpPage);
     //打开字典
     connect(ui->openDict, &QAction::triggered, [=]{
         QString path = QFileDialog::getOpenFileName(this,tr("fileDialog"), "./", tr("fileType"));
         QString name = QFileInfo(QFile(path)).baseName();
         globalSetting->addDict(name, path);
-        _openDict(name);
+        slotOpenDict(name);
     });
 }
 
@@ -110,20 +104,17 @@ void MainWindow::initHelpPage(){
  * @brief MainWindow::initSideBar
  */
 void MainWindow::initSideBar(){
-    connect(this, &MainWindow::emitUpdateSideBarItems, _sideBar, &SideBar::updateMenuItems);
-    connect(_sideBar, &SideBar::itemClicked, [&](const EntryModel& model){_jump("addItem", model.entry);});
     _sideBar->setFixedWidth (200);
+    connect(_sideBar, &SideBar::emitListClicked, [&](EntryModel* model){_jump("addItem", QString::number (model->id));});
+    connect(_sideBar, &SideBar::emitAddEntry, [=]{this->_jump("addItem");});
+    connect(_sideBar, &SideBar::emitEntryDeleted, [=]{this->_jump("addItem");});
 }
 
 //initItemPage 字典项
 void MainWindow::initItemPage(){
-    connect(ui->addItem, &QAction::triggered, [=]{this->_jump("addItem");});
-    connect(ui->addItem, &QAction::triggered, [&]{_jump("addItem");});
-    //connect(ui->addItemButton, &QToolButton::clicked, [&]{_jump("addItem");});
+    connect(ui->addItem, &QAction::triggered, [=]{_jump("addItem");});
     connect(ui->deleteItem, &QAction::triggered, [&]{_addItem->deletePage();});
-    //connect(ui->deleteItemButton, &QToolButton::clicked, [&]{_addItem->deletePage();});
-    connect(this->_addItem, &addItem::entryChanged, _sideBar, &SideBar::updateMenuItems);
-    connect(this->_addItem, &addItem::jumps, this, &MainWindow::_jumpPage);
+    connect(this->_addItem, &addItem::entryChanged, _sideBar, &SideBar::slotupdateMenuItems);
 }
 
 /**
@@ -138,9 +129,8 @@ void MainWindow::initImportExport(){
 
     imports = new Import(this);
     connect(ui->actionImportExcel, &QAction::triggered, imports, &Import::importFromExcel);
-    connect(imports, &Import::importSucceed, _sideBar, &SideBar::updateMenuItems);
+    connect(imports, &Import::importSucceed, _sideBar, &SideBar::slotupdateMenuItems);
 }
-
 
 //创建新字典
 void MainWindow::_createNewDict(){
@@ -154,50 +144,43 @@ void MainWindow::_createNewDict(){
     QString path = dialog->getPath();
     globalSetting->addDict(name, path);
     AppSqlite::instance(path, name);
-    _openDict(name);
+    slotOpenDict(name);
     delete  dialog;
 }
 
 //打开字典
-void MainWindow::_openDict(QString name){
+void MainWindow::slotOpenDict (QString name){
     _reshapeSubmenu(name);
     QString path = globalSetting->getPath(name);
-    QFile file(path);
-    if(!file.exists()) return;
+    if(!QFile(path).exists()) return;
 
     AppSqlite::instance(path);
-    emit emitLoadDict();
+
     this->setWindowTitle (SDB->dictName);
+    ui->closeDict->setEnabled (true);
     ui->menu_import->setEnabled(true);
     ui->menu_export->setEnabled(true);
     ui->addItem->setEnabled(true);
     ui->menu_item->setEnabled(true);
-    emit emitUpdateSideBarItems ();
+
     _jump("loadDict");
+    emit emitLoadDict();
 }
 //关闭字典
-void MainWindow::_closeDict(){
-    _loadDict->save ();
-    QThread::usleep (100);
-    _jump("defaultPage");               //跳转到默认页面
-    this->setWindowTitle (tr("字典"));
+void MainWindow::slotCloseDict(){
+    ui->closeDict->setEnabled (false);
     ui->menu_import->setEnabled(false);
     ui->menu_export->setEnabled(false);
-    ui->menu_item->setEnabled(false);
     ui->addItem->setEnabled(false);
-    AppSqlite::close();
-    emit emitUpdateSideBarItems ();
-    _reshapeSubmenu();
-}
+    ui->menu_item->setEnabled(false);
+    this->setWindowTitle (tr("字典"));
 
-//跳转
-void MainWindow::_jump(const QString& page, const QString& val1, const QString& val2){
-    for(Router r : routers){
-        if(r.name == page){
-            ui->stackWidget->setCurrentIndex(r.order);
-            r.widget->setDefaultValue (val1, val2);
-        }
-    }
+    _loadDict->save ();
+    QThread::usleep (100);
+    AppSqlite::close();
+
+    _reshapeSubmenu();
+    _jump("defaultPage");               //跳转到默认页面
 }
 
 //更新submenu
@@ -207,35 +190,35 @@ void MainWindow::_reshapeSubmenu(QString name){
             ui->dictMenu->removeAction(action);
         }
     }
-    foreach(QAction* a, menuActions){
-        menuActions.removeOne(a);
+    foreach(QAction* a, *menuActions){
+        menuActions->removeOne(a);
         delete a;
     }
     QMap<QString, QString> map;
-    QIcon check(QIcon(":/res/img/check.png"));
     foreach(map, globalSetting->getSubMenu()){
-        QAction* action = new QAction(map.value("name"), this);
-        action->setIcon(check);
-        menuActions.append(action);
+        QAction* action = new QAction(check, map.value("name"), this);
+        menuActions->append(action);
         ui->dictMenu->addAction(action);
         action->setIconVisibleInMenu(action->text() == name);
         QObject::connect(action, &QAction::triggered, [=]{
-            _openDict(map.value("name"));
+            slotOpenDict(map.value("name"));
         });
     }
-    //更新defaultPage的内容
     _defaultPage->updatePage();
 }
 
-void MainWindow::_jumpPage(QString page){
-    if(_addItem->hasEntry(page)){
-        _jump("addItem", page);
-    }else{
-        QMessageBox::about(this, tr("tips"), tr("no page found"));
+//跳转
+void MainWindow::_jump(const QString& page, QString val1, QString val2){
+    for(Router r : routers){
+        if(r.name == page){
+            ui->stackWidget->setCurrentIndex(r.order);
+            r.widget->setDefaultValue (val1, val2);
+        }
     }
 }
 
 //所有内容不需要删除，程序退出自动删除
 MainWindow::~MainWindow(){
     delete ui;
+    delete menuActions;
 }

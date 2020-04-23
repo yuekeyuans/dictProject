@@ -31,6 +31,14 @@ CONFIG += c++11
 RC_ICONS = favoricon.ico
 
 SOURCES += \
+        DictSideBar/bodybarfilelist.cpp \
+        DictSideBar/headerbar.cpp \
+        DictSideBar/headerbarmenu.cpp \
+        DictSideBar/headerbarsearch.cpp \
+#        DictSideBar/main.cpp \
+        DictSideBar/sidebar.cpp \
+        DictSideBar/sidebaritem.cpp \
+        DictSideBar/sidebaritemmodel.cpp \
         QXlsx/source/xlsxabstractooxmlfile.cpp \
         QXlsx/source/xlsxabstractsheet.cpp \
         QXlsx/source/xlsxcell.cpp \
@@ -73,6 +81,7 @@ SOURCES += \
         data/setting.cpp \
         defaultpage.cpp \
         extra/createdictdialog.cpp \
+    extra/dictinfodialog.cpp \
         extra/menuitemwidget.cpp \
         extra/myschemehandler.cpp \
         extra/sidebarselectdialog.cpp \
@@ -88,10 +97,16 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         qt-json-master/json.cpp \
-        sidebar.cpp \
         webviewwitheditor.cpp
 
 HEADERS += \
+        DictSideBar/bodyBarfilelist.h \
+        DictSideBar/headerbar.h \
+        DictSideBar/headerbarmenu.h \
+        DictSideBar/headerbarsearch.h \
+        DictSideBar/sidebar.h \
+        DictSideBar/sidebaritem.h \
+        DictSideBar/sidebaritemmodel.h \
         QXlsx/header/xlsxabstractooxmlfile.h \
         QXlsx/header/xlsxabstractooxmlfile_p.h \
         QXlsx/header/xlsxabstractsheet.h \
@@ -150,6 +165,7 @@ HEADERS += \
         data/setting.h \
         defaultpage.h \
         extra/createdictdialog.h \
+        extra/dictinfodialog.h \
         extra/menuitemwidget.h \
         extra/myschemehandler.h \
         extra/sidebarselectdialog.h \
@@ -166,20 +182,26 @@ HEADERS += \
         loaddict.h \
         mainwindow.h \
         qt-json-master/json.h \
-        sidebar.h \
         sqlitesource.h \
         webviewwitheditor.h
 
 FORMS += \
+        DictSideBar/bodybarfilelist.ui \
+        DictSideBar/filelist.ui \
+        DictSideBar/headerbar.ui \
+        DictSideBar/headerbarmenu.ui \
+        DictSideBar/headerbarsearch.ui \
+        DictSideBar/sidebar.ui \
+        DictSideBar/widget.ui \
         additem.ui \
         defaultpage.ui \
         extra/createdictdialog.ui \
+        extra/dictinfodialog.ui \
         extra/menuitemwidget.ui \
         extra/sidebarselectdialog.ui \
         helppage.ui \
         loaddict.ui \
         mainwindow.ui \
-        sidebar.ui \
         webviewwitheditor.ui
 
 QTQUICK_COMPILER_SKIPPED_RESOURCES += page.qrc
@@ -191,26 +213,16 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    page.qrc \
+    DictSideBar/res.qrc \
     page.qrc \
     res.qrc \
-    res.qrc \
-    translator.qrc \
     translator.qrc
 
 TRANSLATIONS += qnote_zh_CN.ts
 
 DISTFILES += \
-#    QXlsx/QXlsx.pri \
-    README.md \
-    dictProject.pro.user \
-    qnote_zh_CN.qm \
-    qnote_zh_CN.ts \
-    qt-json-master/.gitignore \
-    qt-json-master/AUTHORS \
-    qt-json-master/LICENSE \
-    qt-json-master/README.md \
-    qt-json-master/qt-json.pri
+    DictSideBar/res/img/ \
+    res/
 
 # NOTE: You can fix value of QXlsx path of source code.
   QXLSX_PARENTPATH=./QXlsx/
@@ -222,4 +234,7 @@ include(./QXlsx/QXlsx.pri)
 
 #SUBDIRS += \
 #    QXlsx/QXlsx.pro
+
+SUBDIRS += \
+    DictSideBar/DictSideBar.pro
 

@@ -11,14 +11,15 @@ addItem::addItem(QWidget *parent) :
     ui(new Ui::addItem)
 {
     entry = new EntryModel();
-    editor = new WebViewWithEditor(this);
+
     ui->setupUi(this);
+    editor = new WebViewWithEditor(this);
     ui->verticalLayout->addWidget(editor);
 
     connect(ui->saveButton, &QPushButton::clicked, this,  &addItem::save);
-    connect(editor, &WebViewWithEditor::jumps, this, &addItem::jumps);
+    connect(editor, &WebViewWithEditor::jumps, this, &addItem::emitJumpPage);
     connect(editor, &WebViewWithEditor::toSave, this, &addItem::save);
-    connect(editor, &WebViewWithEditor::emitViewModeChanged, this, &addItem::viewModeChanged);
+    //connect(editor, &WebViewWithEditor::emitViewModeChanged, this, &addItem::viewModeChanged);
 }
 
 void addItem::save(){
@@ -26,32 +27,28 @@ void addItem::save(){
         bool isInsert = entry->id == -1;
         entry->html = html;
         entry->entry = ui->lineEdit->text();
+        if(entry->entry == ""){
+            QMessageBox::about (this,"tips","complete the infomation");
+            return;
+        }
         entry->insertOrUpdate();
         emit this->entryChanged();
         QMessageBox::about(this, tr("tips"),
                            isInsert?tr("insert succeed"):tr("update succeed"));
     });
-
 }
 
-void addItem::updatePage(QString name = nullptr){
+void addItem::updatePage(int id){
     if(entry != nullptr){
         delete entry;
         entry = nullptr;
     }
-    if(name == "" || name.trimmed() == "" || name == nullptr){
+    if(id == -1){
         entry = new EntryModel();
-        ui->lineEdit->setText(entry->entry);
-        editor->setHtmlValue(entry->html);
-        return;
+    }else{
+        EntryModel model{id};
+        entry = model.copyLoad();
     }
-    if(entry != nullptr){
-        delete entry;
-        entry = nullptr;
-    }
-    EntryModel model;
-    model.entry = name;
-    entry = model.copyLoad();
     ui->lineEdit->setText(entry->entry);
     editor->setHtmlValue(entry->html);
 }
@@ -59,12 +56,15 @@ void addItem::updatePage(QString name = nullptr){
 void addItem::deletePage(){
     entry->deleted();
     emit entryChanged();
-    updatePage("");
+    updatePage();
+}
+
+void addItem::setDefaultValue (QString  val1,QString val2){
+    updatePage (val1 == "" ? -1:val1.toInt ());
 }
 
 bool addItem::hasEntry(QString name){
-    EntryModel model;
-    model.entry = name;
+    EntryModel model{name};
     return model.checkExist();
 }
 
@@ -72,11 +72,7 @@ addItem::~addItem()
 {
     delete ui;
     delete editor;
-}
-
-void addItem::viewModeChanged (){
-    EntryModel model;
-    model.entry = ui->lineEdit->text ();
-    model.load ();
-    editor->setHtmlValue (model.html);
+    if(entry != nullptr){
+        delete entry;
+    }
 }

@@ -30,8 +30,6 @@ signals:
 private:
     Ui::LoadDict *ui;
 
-
-
 };
 
 #endif // LOADDICT_H

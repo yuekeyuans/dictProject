@@ -3,7 +3,6 @@
 #include <QTranslator>
 #include <QNetworkProxyFactory>
 #include "data/appsqlite.h"
-#include "sidebar.h"'
 
 AppSqlite* AppSqlite::_appSqlite = nullptr;
 

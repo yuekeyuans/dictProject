@@ -43,6 +43,8 @@ public:
     }
 };
 
+//AppSqlite* AppSqlite::_appSqlite = nullptr;
+
 #define SDB AppSqlite::instance()
 
 #endif // APPSQLITE_H

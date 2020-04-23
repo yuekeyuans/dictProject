@@ -5,7 +5,9 @@
 #include <QDebug>
 class BaseWidget{
 public:
-    virtual void setDefaultValue(const QString& val1 = "", const QString& val2 = ""){}
+    virtual void setDefaultValue(QString="", QString=""){
+        qDebug() << "base widget";
+    }
     ~BaseWidget(){}
 
 };

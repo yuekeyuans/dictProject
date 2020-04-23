@@ -4,16 +4,25 @@
 #include <QObject>
 #include <QPair>
 #include <QTextDocument>
+#include <iostream>
+using namespace std;
 
 class EntryModel : public QObject
 {
     Q_OBJECT
 public:
     explicit EntryModel(QObject *parent = nullptr);
+    EntryModel(int);
+    EntryModel(QString);
     EntryModel(QString entry, QString html);
     EntryModel(int id, QString entry, QString html);
+
+    EntryModel(const EntryModel&) =default;
+    EntryModel& operator=(const EntryModel&) =default;
     ~EntryModel();
     int id = -1;
+    int sortId{-1};
+    bool isVisiable{true};
     QString entry;
     QString text;
     QString mkdown;
@@ -21,12 +30,12 @@ public:
     QString createDate;
     QString lastUpdateDate;
     QString lastViewDate;
+    bool isEntry{true};
 
-    void loadAll(QList<QPair<int, QString>>*, QString keyword, QString sortType);
-    QList<EntryModel*>* loadAll();
     EntryModel* copyLoad();
-    QMap<QString, QString>* sorts;
+    QList<EntryModel*>* loadAll(QString keyword="", bool allTextSearch=false, QString sortType="id");
     QTextDocument* textDocument;
+
 
     bool checkExist();
 
@@ -40,13 +49,15 @@ public slots:
     void insertOrUpdate();
 
     void setLastViewDate();
+    void setVisiable(bool);
     void setLastUpdateDate();
     void setHtml(QString);
     void setMkDown(QString);
     void setText(QString);
+    void setSortId(int);
+    int getTotalCount();
 
 private:
     int getNextId();
 };
-
 #endif // ENTRYMODEL_H

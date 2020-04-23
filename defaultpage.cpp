@@ -11,13 +11,13 @@ DefaultPage::DefaultPage(QWidget *parent) :
     buttons = new QList<QToolButton*>();
 
     connect(ui->createNewDict, &QToolButton::clicked, [=]{
-        emit createNewDict();
+        emit emitCreateNewDict();
     });
+
     connect(ui->openHelp, &QToolButton::clicked, [=]{
-        emit openHelp();
+        emit emitOpenHelp();
     });
     updatePage();
-
 }
 
 DefaultPage::~DefaultPage()
@@ -35,12 +35,13 @@ void DefaultPage::updatePage(){
     QList<QMap<QString, QString>> menu = settings.getSubMenu();
     QMap<QString, QString> i_map;
     foreach(i_map, menu){
+        qDebug() << i_map;
         auto button = new QToolButton(this);
         button->setText(i_map.value("name"));
         ui->dictContainer->addWidget(button);
         buttons->append(button);
         connect(button, &QToolButton::clicked, [=]{
-            emit this->openExistDict(i_map.values().first());
+            emit emitOpenExistDict(i_map.value("name"));
         });
         ui->dictContainer->addWidget(button);
     }

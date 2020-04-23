@@ -60,7 +60,7 @@ WebViewWithEditor::WebViewWithEditor(QWidget *parent) :
     connect(ui->scaleUp, &QToolButton::clicked, [=]{this->scaleUp();});
     connect(ui->scaleDown, &QToolButton::clicked, [=]{this->scaleDown();});
 
-    connect(ui->viewMode, &QToolButton::clicked, this, &WebViewWithEditor::viewModeChanged);
+    connect(ui->viewMode, &QToolButton::clicked, this, &WebViewWithEditor::changeViewMode);
 
     connect(m_webView, &QWebEngineView::loadFinished, this, [=]{ this->setHtmlValue(html);});
     connect(ui->nextEntry, &QToolButton::clicked, [=]{m_webView->forward();});
@@ -69,7 +69,7 @@ WebViewWithEditor::WebViewWithEditor(QWidget *parent) :
 
 void WebViewWithEditor::setUrl(QString url){
     if(url == nullptr){
-        m_webView->load(QUrl("qrc:/simditor/demo.html"));
+        m_webView->load(QUrl("qrc:/summernote/index.html"));
     }else{
         m_webView->load(QUrl(url));
     }
@@ -86,6 +86,7 @@ void WebViewWithEditor::getHtmlValue(function<void (QString)> fun){
         auto html = v.toString();
         if(fun != nullptr){
             fun(html);
+            qDebug() << html;
         }
     });
 }
@@ -93,36 +94,7 @@ void WebViewWithEditor::getHtmlValue(function<void (QString)> fun){
 void WebViewWithEditor::setHtmlValue(QString value){
     this->html = value;
     QString function = "setHtmlContent('" + value + "')";
-    m_webView->page()->runJavaScript(function);
-}
 
-void WebViewWithEditor::getPlainTextValue(function<void (QString)> fun){
-    m_webView->page()->runJavaScript("getPlainTextContent()",[&](const QVariant &v)
-    {
-        QString plainText = v.toString();
-        if(fun != nullptr){
-            fun(plainText);
-        }
-    });
-}
-
-void WebViewWithEditor::setPlainTextValue(QString value){
-    QString function = "setPlainTextContent('" + value + "')";
-    m_webView->page()->runJavaScript(function);
-}
-
-void WebViewWithEditor::getMarkdownValue(function<void (QString)> fun){
-    m_webView->page()->runJavaScript("getMarkdownContent()",[&](const QVariant &v)
-    {
-        QString markdownFile = v.toString();
-        if(fun != nullptr){
-            fun(markdownFile);
-        }
-    });
-}
-
-void WebViewWithEditor::setMarkdownValue(QString value){
-    QString function = "setMarkdownContent('" + value + "')";
     m_webView->page()->runJavaScript(function);
 }
 
@@ -138,17 +110,7 @@ void WebViewWithEditor::scaleDown(){
     m_webView->page()->runJavaScript(function);
 }
 
-void WebViewWithEditor::viewModeChanged (){
+void WebViewWithEditor::changeViewMode (){
     isViewMode = !isViewMode;
-    m_webView->page()->runJavaScript("getHtmlContent()",[=](const QVariant &v){
-        html = v.toString();
-        if(isViewMode){
-            emit toSave();
-            QThread::currentThread ()->usleep (200);
-            m_webView->setUrl(QUrl("qrc:/simditor/demo_desplay.html"));
-        }else{
-            m_webView->setUrl(QUrl("qrc:/simditor/demo.html"));
-            emit emitViewModeChanged();
-        }
-    });
+    m_webView->page()->runJavaScript("toggleShowMode()");
 }

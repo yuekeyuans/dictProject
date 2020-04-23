@@ -19,11 +19,6 @@ LoadDict::LoadDict(QWidget *parent) :
     connect(editor, &WebViewWithEditor::emitViewModeChanged, this, &LoadDict::viewModeChanged);
 }
 
-LoadDict::~LoadDict()
-{
-    delete ui;
-    delete editor;
-}
 
 void LoadDict::load(){
     DictModel dictModel;
@@ -47,4 +42,10 @@ void LoadDict::viewModeChanged (){
     model.title = ui->title->text ();
     model.load ();
     editor->setHtmlValue (model.html);
+}
+
+LoadDict::~LoadDict()
+{
+    delete ui;
+    delete editor;
 }
