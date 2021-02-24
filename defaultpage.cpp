@@ -26,16 +26,13 @@ DefaultPage::~DefaultPage()
 }
 
 void DefaultPage::updatePage(){
-    for(auto button: *buttons){
-        buttons->removeOne(button);
-        delete  button;
-    }
+    qDeleteAll(*buttons);
+    buttons->clear();
 
     Setting settings;
     QList<QMap<QString, QString>> menu = settings.getSubMenu();
     QMap<QString, QString> i_map;
     foreach(i_map, menu){
-        qDebug() << i_map;
         auto button = new QToolButton(this);
         button->setText(i_map.value("name"));
         ui->dictContainer->addWidget(button);

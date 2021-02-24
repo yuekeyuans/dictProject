@@ -12,11 +12,11 @@ class DictModel : public QObject
     Q_OBJECT
 public:
     explicit DictModel(QObject *parent = nullptr);
-    int id;
-    QString title;
-    QString description;
-    QString image;
-    QString html;
+    int id{-1};
+    QString title{""};
+    QString description{""};
+    QString image{""};
+    QString html{""};
 
     int getNextId();
 

@@ -14,11 +14,11 @@ LoadDict::LoadDict(QWidget *parent) :
     ui->setupUi(this);
     ui->container->addWidget(editor);
     connect(ui->save, &QPushButton::clicked, this, &LoadDict::save);
-    connect(editor, &WebViewWithEditor::jumps, this, &LoadDict::jumps);
+    connect(editor, &WebViewWithEditor::jumps, this, &LoadDict::emitJumpPage);
     connect(editor, &WebViewWithEditor::toSave, this, &LoadDict::save);
-    connect(editor, &WebViewWithEditor::emitViewModeChanged, this, &LoadDict::viewModeChanged);
-}
+    connect(this, &LoadDict::emitViewModeChanged, editor, &WebViewWithEditor::slotViewModeChanged);
 
+}
 
 void LoadDict::load(){
     DictModel dictModel;
@@ -28,20 +28,13 @@ void LoadDict::load(){
 }
 
 void LoadDict::save(){
-    this->editor->getHtmlValue([&](QString html){
+    this->editor->getHtmlValue([&](QString html) {
         QSqlQuery query;
         query.prepare("update dict set html = :html");
         query.bindValue(":html", html);
         query.exec();
         QMessageBox::about(this, tr("tips"), tr("succeed saving"));
     });
-}
-
-void LoadDict::viewModeChanged (){
-    DictModel model;
-    model.title = ui->title->text ();
-    model.load ();
-    editor->setHtmlValue (model.html);
 }
 
 LoadDict::~LoadDict()

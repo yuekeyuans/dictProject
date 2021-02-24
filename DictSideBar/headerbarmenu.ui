@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>HeaderBarMenu</class>
+ <widget class="QWidget" name="HeaderBarMenu">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>22</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>22</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>22</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="prepareInput">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>点击搜索词条</string>
+       </property>
+       <property name="statusTip">
+        <string>点击搜索词条</string>
+       </property>
+       <property name="whatsThis">
+        <string>点击搜索词条</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">
+	background:rgba(0, 0,0,0);
+	border:none;
+	color:rgb(103, 103, 103)
+</string>
+       </property>
+       <property name="text">
+        <string>搜索</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>:/DictSideBar/res/img/item/search_light.png</normalon>
+        </iconset>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="deleteButton">
+       <property name="minimumSize">
+        <size>
+         <width>22</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>22</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>删除条目</string>
+       </property>
+       <property name="statusTip">
+        <string>删除条目</string>
+       </property>
+       <property name="whatsThis">
+        <string>删除条目</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">
+	background:rgba(0, 0,0,0);
+	border:none;
+</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>:/DictSideBar/res/img/item/move.png</normalon>
+        </iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="addButton">
+       <property name="minimumSize">
+        <size>
+         <width>22</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>22</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>添加条目</string>
+       </property>
+       <property name="statusTip">
+        <string>添加条目</string>
+       </property>
+       <property name="whatsThis">
+        <string>添加条目</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">
+	background:rgba(0, 0,0,0);
+	border:none;
+</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>:/DictSideBar/res/img/item/add.png</normalon>
+        </iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="tagButton">
+       <property name="minimumSize">
+        <size>
+         <width>22</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>22</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>标签组</string>
+       </property>
+       <property name="statusTip">
+        <string>标签组</string>
+       </property>
+       <property name="whatsThis">
+        <string>标签组</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QToolButton{
+	background:rgba(0, 0,0,0);
+	border:none;
+}
+QToolButton::menu-indicator {
+    image: none;
+}
+</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>:/DictSideBar/res/img/item/add_tags.png</normalon>
+        </iconset>
+       </property>
+       <property name="popupMode">
+        <enum>QToolButton::InstantPopup</enum>
+       </property>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonIconOnly</enum>
+       </property>
+       <property name="arrowType">
+        <enum>Qt::NoArrow</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="viewHidden">
+       <property name="minimumSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>查看隐藏条目</string>
+       </property>
+       <property name="statusTip">
+        <string>查看隐藏条目</string>
+       </property>
+       <property name="whatsThis">
+        <string>查看隐藏条目</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">
+	background:rgba(0, 0,0,0);
+	border:none;
+</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>:/res/img/item/view-off.png</normaloff>
+         <normalon>:/DictSideBar/res/img/item/view-off.png</normalon>:/res/img/item/view-off.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="infoButton">
+       <property name="minimumSize">
+        <size>
+         <width>22</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>22</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>词典信息</string>
+       </property>
+       <property name="statusTip">
+        <string>词典信息</string>
+       </property>
+       <property name="whatsThis">
+        <string>词典信息</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">
+	background:rgba(0, 0,0,0);
+	border:none;
+</string>
+       </property>
+       <property name="text">
+        <string>i</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>:/DictSideBar/res/img/item/info.png</normalon>
+        </iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

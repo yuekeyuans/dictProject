@@ -15,7 +15,7 @@ class HelpPage : public QWidget, public BaseWidget
 public:
     explicit HelpPage(QWidget *parent = nullptr);
     ~HelpPage();
-    void setDefaltValue(const QString& page, const QString& val2){
+    void setDefaltValue(const QString& page, const QString&){
         if(page == "help_md"){
             this->m_webView->load(QUrl("qrc:/res/usage/markdown.html"));
         }else if(page == "help_importExport"){

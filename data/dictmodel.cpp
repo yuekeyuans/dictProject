@@ -29,6 +29,9 @@ int DictModel::getNextId(){
 }
 
 void DictModel::insert(){
+    if(SDB == nullptr){
+        return;
+    }
     id = getNextId();
     if(id != 1){
         update();
@@ -47,6 +50,9 @@ void DictModel::insert(){
 
 
 void DictModel::update(){
+    if(SDB == nullptr){
+        return;
+    }
     QSqlQuery query(AppSqlite::instance()->database);
     query.prepare("UPDATE [dict] SET [title] = :title, [description] = :description, [html] = :html");
     query.bindValue(":title", title);
@@ -56,6 +62,9 @@ void DictModel::update(){
 }
 
 void DictModel::load(){
+    if(SDB == nullptr){
+        return;
+    }
     QSqlQuery query(AppSqlite::instance()->database);
     query.exec("select * from dict where id = 1");
     while(query.next()){

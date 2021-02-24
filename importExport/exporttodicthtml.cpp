@@ -3,44 +3,45 @@
 #include <QFileDialog>
 #include <QTextStream>
 #include <QMessageBox>
+#include <QStandardPaths>
 
 ExportToDictHtml::ExportToDictHtml(QObject *parent) : QThread(parent)
 {
 
+    QRegExp ex("\"entry://(.*)\"");
+    ex.setMinimal(true);
 }
 
 void ExportToDictHtml::run(){
-    this->process();
-    emit exportComplete();
+
+    QFile file(path);
+    file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
+    QTextStream out(&file);
+
+    for(auto entry: *entries){
+        out << wrapFile ((entry->entry)) <<endl;
+        out << wrapFile(entry->html) << endl;
+        out << "</>" <<endl;
+    }
+    qDeleteAll(*entries);
+    entries->clear();
+    delete entries;
+    entries = nullptr;
+    delete dict;
+    dict = nullptr;
+    file.close();
+    emit emitComplete ();
 }
 
 void ExportToDictHtml::process(){
-    QString path = QFileDialog::getSaveFileName(nullptr, tr("tips"), "./" + baseName + ".txt", tr("mdict html(*.txt)"));
-    if(path == nullptr || path == "") return;
-    file = new QFile(path);
-    file->open(QIODevice::WriteOnly | QIODevice::Text);
-
-    for(auto entry: *entries){
-        writeFile(entry->entry);
-        writeFile(entry->html);
-        writeFile("</>");
-    }
-    for(auto entry : *entries){
-        delete entry;
-    }
-    delete entries;
-    delete dict;
-    file->close();
-    QMessageBox::about(nullptr, tr("tips"), tr("export succedd"));
+    this->start ();
 }
 
-void ExportToDictHtml::writeFile(QString content){
-    QTextStream out(file);
-    QRegExp ex("\"entry://(.*)\"");
-    ex.setMinimal(true);
+QString ExportToDictHtml::wrapFile(QString content){
     ex.indexIn(content);
-    content.replace(ex, "\"\\1.html\"");
-    out << content <<endl;
+    content = content.replace(ex, "\"\\1.html\"");
+    content = content.replace ("plugin/summernote-emoji-master/tam-emoji/img/", "./css/");
+    return content;
 }
 
 void ExportToDictHtml::setDict(DictModel *dict){
@@ -56,5 +57,9 @@ void ExportToDictHtml::setBaseName(QString baseName){
 }
 
 ExportToDictHtml::~ExportToDictHtml(){
+}
 
+void ExportToDictHtml::setPath(QString path)
+{
+    this->path = path;
 }

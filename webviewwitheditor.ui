@@ -34,54 +34,34 @@
      <item>
       <layout class="QHBoxLayout" name="operators">
        <item>
-        <widget class="QToolButton" name="prevEntry">
-         <property name="toolTip">
-          <string>上一个词条</string>
+        <widget class="QPushButton" name="entryCount">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
          </property>
-         <property name="toolTipDuration">
-          <number>0</number>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>20</height>
+          </size>
          </property>
-         <property name="statusTip">
-          <string/>
-         </property>
-         <property name="whatsThis">
-          <string>上一个词条</string>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">border:none;</string>
-         </property>
-         <property name="text">
-          <string>...</string>
-         </property>
-         <property name="icon">
-          <iconset resource="res.qrc">
-           <normaloff>:/res/img/Previous.png</normaloff>:/res/img/Previous.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QToolButton" name="nextEntry">
-         <property name="toolTip">
-          <string>下一个词条</string>
-         </property>
-         <property name="toolTipDuration">
-          <number>0</number>
-         </property>
-         <property name="statusTip">
-          <string/>
-         </property>
-         <property name="whatsThis">
-          <string>下一个词条</string>
+         <property name="baseSize">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
          </property>
          <property name="styleSheet">
-          <string notr="true">border:none;</string>
+          <string notr="true">border:none;
+border-bottom:1px solid #aaa</string>
          </property>
          <property name="text">
-          <string>...</string>
+          <string>PushButton</string>
          </property>
-         <property name="icon">
-          <iconset resource="res.qrc">
-           <normaloff>:/res/img/Next.png</normaloff>:/res/img/Next.png</iconset>
+         <property name="flat">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -99,71 +79,66 @@
         </spacer>
        </item>
        <item>
-        <widget class="QToolButton" name="viewMode">
-         <property name="toolTip">
-          <string>查看</string>
-         </property>
-         <property name="toolTipDuration">
-          <number>-3</number>
-         </property>
-         <property name="whatsThis">
-          <string>查看</string>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">border:none;</string>
-         </property>
+        <widget class="QLabel" name="scaleCount">
          <property name="text">
-          <string/>
+          <string>100%</string>
          </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>:/res/img/view.png</normaloff>
-           <normalon>:/res/img/view_on.png</normalon>:/res/img/view.png</iconset>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSlider" name="scaleSlider">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>0</height>
+          </size>
          </property>
-         <property name="checkable">
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>1</string>
+         </property>
+         <property name="autoFillBackground">
           <bool>false</bool>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QToolButton" name="scaleUp">
-         <property name="toolTip">
-          <string>放大页面</string>
-         </property>
-         <property name="toolTipDuration">
-          <number>0</number>
-         </property>
          <property name="styleSheet">
-          <string notr="true">border:none;</string>
+          <string notr="true">QSlider::handle:horizontal {                               
+    background-color:rgba(150,150,150,150);
+} </string>
          </property>
-         <property name="text">
-          <string>放大</string>
+         <property name="minimum">
+          <number>1</number>
          </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>:/res/img/scaleup.png</normaloff>
-           <normalon>:/res/img/scale_up.png</normalon>:/res/img/scaleup.png</iconset>
+         <property name="maximum">
+          <number>60</number>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QToolButton" name="scaleDown">
-         <property name="toolTip">
-          <string>缩小页面</string>
+         <property name="pageStep">
+          <number>1</number>
          </property>
-         <property name="toolTipDuration">
-          <number>0</number>
+         <property name="value">
+          <number>20</number>
          </property>
-         <property name="styleSheet">
-          <string notr="true">border:none;</string>
+         <property name="sliderPosition">
+          <number>20</number>
          </property>
-         <property name="text">
-          <string>缩小</string>
+         <property name="tracking">
+          <bool>false</bool>
          </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>:/res/img/scaledown.png</normaloff>
-           <normalon>:/res/img/scale_down.png</normalon>:/res/img/scaledown.png</iconset>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="invertedAppearance">
+          <bool>false</bool>
+         </property>
+         <property name="invertedControls">
+          <bool>false</bool>
+         </property>
+         <property name="tickPosition">
+          <enum>QSlider::TicksAbove</enum>
          </property>
         </widget>
        </item>
@@ -173,8 +148,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="res.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

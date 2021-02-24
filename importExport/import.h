@@ -3,6 +3,20 @@
 
 #include <QObject>
 #include "importExport/importfromexcel.h"
+#include <QFileDialog>
+#include <data/entrymodel.h>
+#include <data/dictmodel.h>
+
+#include "xlsxdocument.h"
+#include "xlsxchartsheet.h"
+#include "xlsxcellrange.h"
+#include "xlsxchart.h"
+#include "xlsxrichstring.h"
+#include "xlsxworkbook.h"
+#include <QDebug>
+#include <QMessageBox>
+
+using namespace QXlsx;
 
 class Import : public QObject
 {
@@ -12,14 +26,16 @@ public:
     ~Import();
 
 signals:
-    void importFailed();
-    void importSucceed();
+    void emitImportSucceed();
 
 public slots:
-    void importFromExcel();
+    void fromExcel();
+
+    void slotSuccess();
+    void slotFail();
 
 private:
-    ImportFromExcel* fromExcel;
+    ImportFromExcel* importFromExcel;
 };
 
 #endif // IMPORT_H

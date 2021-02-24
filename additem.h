@@ -17,22 +17,27 @@ class addItem : public QWidget, public BaseWidget
 public:
     explicit addItem(QWidget *parent = nullptr);
     ~addItem();
-    bool hasEntry(QString);
 
 public slots:
     void save();
-    void deletePage();
     void setDefaultValue(QString val1 = "",QString = "");
+    void setEntryModel(EntryModel *);
 
 signals:
     void entryChanged();
-    void emitJumpPage(QString);
+    void emitJumpPage(EntryModel*, QString fragment);
+    void emitViewModeChanged(bool);
+    void emitSetHtmlValue(QString);
+    void emitGetHtmlValue(EntryModel*);
+    void emitSideBarUpdated();
 
 private:
     Ui::addItem *ui;
-    WebViewWithEditor* editor;
-    EntryModel* entry;
-    void updatePage(int id = -1);
+    WebViewWithEditor* editor{nullptr};
+    EntryModel* entry{nullptr};
+    void updatePage();
+    bool isViewMode{false};
+    bool isAddEntry{false};
 };
 
 #endif // ADDITEM_H

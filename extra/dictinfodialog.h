@@ -15,13 +15,15 @@ public:
     explicit DictInfoDialog(QWidget *parent = nullptr);
     ~DictInfoDialog();
 
-    DictInfoDialog* args(QString, QString, QString, QString);
+    void args(QString, QString, QString, QString, QString, QString);
 private:
     Ui::DictInfoDialog *ui;
     QString name;
     QString path;
     QString size;
     QString count;
+    QString showCount;
+    QString hideCount;
     QString readableFilesize( long filesize);
 };
 

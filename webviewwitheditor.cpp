@@ -9,13 +9,23 @@
 #include "extra/myschemehandler.h"
 #include <QWebEngineUrlScheme>
 #include <QTextDocument>
-#include <QThread>
+#include <data/entrymodel.h>
+#include <QNetworkProxyFactory>
+#include "data/dictmodel.h"
+#include <QMenu>
+
+double WebViewWithEditor::scaleFactor = 1.0;
 
 WebViewWithEditor::WebViewWithEditor(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::WebViewWithEditor)
 {
+    ui->setupUi(this);
+
     mySchemeHandler = new MySchemeHandler(this);
+    setting = new Setting();
+    defaultPath = setting->getData ("exePath");
+    QNetworkProxyFactory::setUseSystemConfiguration(false);
     QWebEngineSettings::defaultSettings()->setAttribute(QWebEngineSettings::PlaybackRequiresUserGesture, true);
     QWebEngineSettings::defaultSettings()->setAttribute(QWebEngineSettings::AutoLoadImages, true);
     QWebEngineSettings::defaultSettings()->setAttribute(QWebEngineSettings::Accelerated2dCanvasEnabled, true);
@@ -31,86 +41,191 @@ WebViewWithEditor::WebViewWithEditor(QWidget *parent) :
     QWebEngineSettings::defaultSettings()->setUnknownUrlSchemePolicy(QWebEngineSettings::AllowAllUnknownUrlSchemes);
     QWebEngineProfile::defaultProfile()->installUrlSchemeHandler("entry",mySchemeHandler);
 
-    //jumpStack = new JumpStack(this);
+    m_webView = new QWebEngineView();
 
-    m_webView = new QWebEngineView(this);
-    ui->setupUi(this);
     ui->container->addWidget(m_webView);
-    setUrl();
+    setUrl ();
 
-    connect(mySchemeHandler, &MySchemeHandler::jumps, this ,&WebViewWithEditor::jumps);
+    channel = new QWebChannel(this);
+    webChannelObject = new WebChannelObject(this);
+    channel->registerObject("WebChannelObject", webChannelObject);
+    m_webView->page()->setWebChannel(channel);
 
-    // 快捷键
+    scaleFactor = setting->getScaleFactor ();
+    ui->scaleCount->setText (QString::number (int(scaleFactor * 100)) + "%");
+    ui->scaleSlider->setValue (getPos (scaleFactor));
+
     //保存
-    QShortcut  *saveShortCut = new QShortcut(QKeySequence(tr("ctrl+s")), this);
+    saveShortCut = new QShortcut(QKeySequence(tr("ctrl+s")), this);
     connect(saveShortCut, &QShortcut::activated, this, &WebViewWithEditor::toSave);
-    //放大
-    QShortcut  *scaleUp= new QShortcut(QKeySequence(tr("ctrl++")), this);
-    connect(scaleUp, &QShortcut::activated, this, &WebViewWithEditor::scaleUp);
-    //缩小
-    QShortcut  *scaleDown= new QShortcut(QKeySequence(tr("ctrl+-")), this);
-    connect(scaleDown, &QShortcut::activated, this, &WebViewWithEditor::scaleDown);
-    //正常
-    QShortcut *scaleNormal = new QShortcut(QKeySequence(tr("ctrl+0")), this);
-    connect(scaleNormal, &QShortcut::activated, [=]{
-        this->scaleFactor = 1.0;
-        m_webView->page()->runJavaScript("setScaleFactor(0)");
+
+    connect(mySchemeHandler, &MySchemeHandler::jumps, [&](QString ,QString path, QString fragment){
+        if(path != EntryModel::ENTRY_ID_NULL){
+            EntryModel model;
+            model.id = path;
+            model.load ();
+            if(model.id != -1){
+                emit jumps(&model, fragment);
+            }
+        }
     });
 
-    connect(ui->scaleUp, &QToolButton::clicked, [=]{this->scaleUp();});
-    connect(ui->scaleDown, &QToolButton::clicked, [=]{this->scaleDown();});
+    connect(m_webView, &QWebEngineView::loadFinished, this, [=]{
+        this->setHtmlValue(html);
+    });
 
-    connect(ui->viewMode, &QToolButton::clicked, this, &WebViewWithEditor::changeViewMode);
+    connect(ui->scaleSlider, &QSlider::valueChanged, [&](int val) {
+        scaleFactor = getScale (val);
+        setting->setScaleFactor (scaleFactor);
+        scalePage(scaleFactor);
+        ui->scaleCount->setText (QString::number (int(scaleFactor * 100)) + "%");
+    });
 
-    connect(m_webView, &QWebEngineView::loadFinished, this, [=]{ this->setHtmlValue(html);});
-    connect(ui->nextEntry, &QToolButton::clicked, [=]{m_webView->forward();});
-    connect(ui->prevEntry, &QToolButton::clicked, [=]{m_webView->back();});
+    m_webView->setContextMenuPolicy(Qt::CustomContextMenu);
+    webMenu = new QMenu(this);
+    connect(m_webView, &QWidget::customContextMenuRequested, this, [&] {
+        webMenu->clear();
+        if(m_webView->hasSelection ()){
+            webMenu->addAction(tr("cut"));
+            webMenu->addAction(tr("copy"));
+            webMenu->addAction(tr("delete"));
+        }
+        webMenu->addAction(tr("paste"));
+        webMenu->addAction(tr("paste with format"));
+        webMenu->addAction(tr("save"));
+        webMenu->exec(QCursor::pos ());
+    });
 }
 
-void WebViewWithEditor::setUrl(QString url){
-    if(url == nullptr){
-        m_webView->load(QUrl("qrc:/summernote/index.html"));
+//直接写
+double WebViewWithEditor::getScale(int x){
+    return 0.05*x;
+}
+
+int WebViewWithEditor::getPos(double x){
+    return int(x * 20);
+}
+
+void WebViewWithEditor::setUrl (QString url){
+    if(url == ""){
+        m_webView->load (QUrl(defaultPath +  DEFAULT_URL));
     }else{
-        m_webView->load(QUrl(url));
+        m_webView->load (QUrl(url));
+    }
+}
+
+void WebViewWithEditor::getHtmlValue(function<void (QString)> fun){
+    m_webView->page()->runJavaScript("getHtmlContent()",[=](const QVariant &v)
+    {
+        if(fun != nullptr){
+            fun(v.toString());
+        }
+    });
+}
+
+void WebViewWithEditor::getHtmlValueWithSet(EntryModel *entry)
+{
+    m_webView->page()->runJavaScript("getHtmlContent()", [=](const QVariant &v){
+        bool isInsert = (entry->id == EntryModel::ENTRY_ID_NULL);
+            entry->html = v.toString ();
+                if (entry->entry == "") {
+                    QMessageBox::about(this, tr("tips"), tr("complete the infomation"));
+                    return;
+                }
+                if (!entry->entry.contains("|")) { // 单个entry
+                    bool res = entry->insertOrUpdate();
+                    if (res) {
+                        emit emitEntryChanged();
+                        QMessageBox::about(this,
+                                           tr("tips"),
+                                           isInsert ? tr("insert succeed") : tr("update succeed"));
+                    } else {
+                        QMessageBox::about(this,
+                                           tr("tips"),
+                                           isInsert ? tr("insert fail, please use proper name")
+                                                    : tr("update fail, please use proper name"));
+                    }
+                } else {
+                    auto entries = entry->entry.split("|");
+                    for (auto en : entries) {
+                        if (en.trimmed() == "") {
+                            continue;
+                        }
+                        en = en.trimmed();
+                        EntryModel model;
+                        model.entry = en;
+                        model.html = entry->html;
+                        bool res = model.insertOrUpdate();
+                        if (res) {
+                            emit emitEntryChanged();
+                            QMessageBox::about(this, tr("tips"), isInsert ? tr("succeed1") : tr("succeed2"));
+                        } else {
+                            QMessageBox::about(this,
+                                               tr("tips"),
+                                               isInsert ? tr("insert fail, please use proper name")
+                                                        : tr("update fail, please use proper name"));
+                        }
+                    }
+                }
+    });
+}
+
+
+void WebViewWithEditor::setHtmlValue(QString value){
+    this->html = value;
+    value = value.replace ("\n", "").replace ("\r", "").replace("'", "\"");
+    QString function = "setHtmlContent('" + value + "')";
+    m_webView->page()->runJavaScript(function);
+    this->scalePage (setting->getScaleFactor ());
+    this->slotUpdateEntryCount();
+}
+
+void WebViewWithEditor::scalePage(double scale){
+    QString function = "setScaleFactor(" + QString::number(scale) + ")";
+    m_webView->page()->runJavaScript(function);
+}
+
+void WebViewWithEditor::slotViewModeChanged (bool isView){
+    if(isView == isViewMode) return;
+    isViewMode = isView;
+    m_webView->page()->runJavaScript(isViewMode ? "viewMode()": "editMode()");
+}
+
+void WebViewWithEditor::setEntry(const EntryModel* entry)
+{
+    this->webChannelObject->setCurrentEntry(entry);
+}
+
+void WebViewWithEditor::slotJumpToAnchor(QString anchor)
+{
+    if (anchor != "") {
+        m_webView->page()->runJavaScript("window.location.hash='" + anchor.trimmed() + "'");
+    }
+}
+
+void WebViewWithEditor::slotUpdateEntryCount()
+{
+    if (SDB == nullptr) {
+        ui->entryCount->setText(tr("please open dict"));
+        return;
+    }
+    EntryModel model;
+    int count = model.getTotalCount();
+    if (count == -1) {
+        ui->entryCount->setText(tr("please open dict"));
+    }else{
+        ui->entryCount->setText(tr("当前共有 ") + QString::number(count) + tr("词条"));
     }
 }
 
 WebViewWithEditor::~WebViewWithEditor()
 {
     delete ui;
-}
-
-void WebViewWithEditor::getHtmlValue(function<void (QString)> fun){
-    m_webView->page()->runJavaScript("getHtmlContent()",[=](const QVariant &v)
-    {
-        auto html = v.toString();
-        if(fun != nullptr){
-            fun(html);
-            qDebug() << html;
-        }
-    });
-}
-
-void WebViewWithEditor::setHtmlValue(QString value){
-    this->html = value;
-    QString function = "setHtmlContent('" + value + "')";
-
-    m_webView->page()->runJavaScript(function);
-}
-
-void WebViewWithEditor::scaleUp(){
-    this->scaleFactor += 0.1;
-    QString function = "setScaleFactor(" + QString::number(this->scaleFactor) + ")";
-    m_webView->page()->runJavaScript(function);
-}
-
-void WebViewWithEditor::scaleDown(){
-    this->scaleFactor -= 0.1;
-    QString function = "setScaleFactor(" + QString::number(this->scaleFactor) + ")";
-    m_webView->page()->runJavaScript(function);
-}
-
-void WebViewWithEditor::changeViewMode (){
-    isViewMode = !isViewMode;
-    m_webView->page()->runJavaScript("toggleShowMode()");
+    delete mySchemeHandler;
+    delete m_webView;
+    delete webMenu;
+    delete channel;
+    delete webChannelObject;
+    delete setting;
+    delete saveShortCut;
 }

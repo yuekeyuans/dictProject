@@ -108,3 +108,28 @@ QString Setting::getPath(QString name){
 QList<QMap<QString, QString>> Setting::getSubMenu(){
     return this->dicts;
 }
+
+double Setting::getScaleFactor(){
+    QSettings setting;
+    if(setting.contains ("webview/scaleFactor")){
+        return setting.value ("webview/scaleFactor", 1.0).toDouble ();
+    }
+    return 1.0;
+}
+
+void Setting::setScaleFactor(double factor){
+    QSettings setting;
+    setting.setValue ("webview/scaleFactor", factor);
+
+}
+
+void Setting::setData(QString name, QString value){
+    QSettings setting;
+    setting.setValue (name, value);
+}
+
+QString Setting::getData(QString name){
+    QSettings setting;
+    return setting.value (name, "").toString ();
+}
+

@@ -18,16 +18,17 @@ public:
     void setEntries(QList<EntryModel*>*);
     void setDict(DictModel*);
     void setBaseName(QString);
-signals:
-    void exportComplete();
-    void exportFail();
+    void setPath(QString);
 
+signals:
+    void emitComplete();
 private:
-    void writeFile(QString);
+    QString wrapFile(QString);
     QList<EntryModel*>* entries;
     DictModel* dict;
     QString baseName;
-    QFile *file;
+    QRegExp ex;
+    QString path;
 
 };
 

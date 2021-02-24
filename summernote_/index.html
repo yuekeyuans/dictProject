@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- include libraries(jQuery, bootstrap) -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="plugin/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet"></link>
+
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+<!-- include summernote css/js -->
+<link href="css/summernote.css" rel="stylesheet" />
+<link href='plugin/styles.css' rel='stylesheet'/>
+<link href="plugin/summernote-list-styles-master/summernote-list-styles.css" rel="stylesheet"></link>
+<link href="plugin/summernote-add-text-tags-master/summernote-add-text-tags.css" rel='stylesheet'></link>
+<link href="plugin/summernote-emoji-master/tam-emoji/css/emoji.css" rel='stylesheet'></link>
+<link href="plugin/jquery.autocomplete.css" rel='stylesheet'></link>
+
+<script src="plugin/qwebchannel.js"></script>
+<script src="js/summernote.js"></script>
+<script src="plugin/jquery.autocomplete.js"></script>
+<script src="plugin/typeahead.bundle.js"></script>
+<script src="plugin/summernote-ext-print-master/summernote-ext-print.js"></script>
+<script src="plugin/summernote-image-attributes-master/summernote-image-attributes.js"></script>
+<script src="plugin/summernote-image-attributes-master/lang/zh-CN.js"></script>
+<script src="plugin/summernote-pagebreak-master/summernote-pagebreak.js"></script>
+<script src="plugin/summernote-image-shapes-master/summernote-image-shapes.js"></script>
+<script src="plugin/summernote-list-styles-master/summernote-list-styles.js"></script>
+<script src="plugin/summernote-table-headers-master/summernote-table-headers.js"></script>
+<script src="plugin/summernote-table-styles-master/summernote-table-styles.js"></script>
+<script src="plugin/summernote-text-findnreplace-master/summernote-text-findnreplace.js"></script>
+<script src="plugin/summernote-text-findnreplace-master/lang/zh-CN.js"></script>
+<script src="plugin/summernote-add-text-tags-master/summernote-add-text-tags.js"></script>
+<script src="plugin/summernote-ext-checkbox-master/summernote-ext-checkbox.js"></script>
+<script src="plugin/summernote-emoji-master/tam-emoji/js/config.js"></script>
+<script src="plugin/summernote-emoji-master/tam-emoji/js/tam-emoji.js"></script>
+<script src="plugin/summernote-text-manipulator-master/summernote-text-manipulator.js"></script>
+<script src="plugin/summernote-list-of-links-master/summernote-list-of-links.js"></script>
+<script src="js/lang/summernote-zh-CN.js"></script>
+<script src="plugin/specialchars/summernote-ext-specialchars.js"></script>
+<script src="plugin/summernote-brush/summernote-brush.js"></script>
+<script src="plugin/summernote-spliteline/spliteline.js"></script>
+<script src="plugin/summernote-add-anchors/summernote-add-anchors.js"></script>
+<script src="plugin/summernote-link-and-anchor/link-and-anchor.js"></script>
+
+</head>
+
+<body style="font-family:SimSun">
+
+  <div id="summernote"><p></p></div>
+  <script>
+    document.emojiSource = 'plugin/summernote-emoji-master/tam-emoji/img';
+    document.emojiType = 'image';
+    config = {
+        placeholder: '',
+        airMode: true,
+        lang:"zh-CN",
+        defaultProtocol: "entry://",
+        blockquoteBreakingLevel: 1,
+        disableDragAndDrop:true,
+        disableLinkTarget:true,
+        tabDisable: true,
+        fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24','26', '28', '30', 
+        '32', '34', '36'],  
+        ontSizeUnits: ['px'],  
+        fontNames: [
+          //'Arial', 'Arial Black', 
+          'Comic Sans MS', 'Courier New',
+          'Helvetica Neue', 'Helveticass', 'Impact', 'Lucida Grande',
+          'Tahoma', 'Times New Roman', 'Verdana',
+          'SimSun','SimHei','NSimSun','FangSong',
+          'KaiTi','Microsoft JhengHei','Microsoft YaHei','MingLiU',
+          'DFKai-SB','STSong','STZhongsong','YouYuan',
+          'LiSu','STFangsong','STCaiyun','STHupo','STLiti',
+          'STXingkai','STXinwei','STXihei','STKaiti','FZShuTi','FZYaoti',
+        ],
+        toolbar: [
+          ['style', ['style','brush', 'clear']],
+          ['font', ['fontname','fontsize', 'color','bold','italic', 'underline','strikethrough']],
+          ['para', ['ul', 'listStyles', 'paragraph', 'height', ]],
+          ['insert', ['spliteline', 'table', 'linknanchor', 'picture', 'checkbox','emoji']],
+          ['view', ['codeview', 'help','undo','redo', 'findnreplace',]],
+          ['my', [ 'fullscreen', ]],
+          ['others',['specialchars']],
+          //['disabled', [, 'add-text-tags', 'ol','video','textManipulator', 'print',]]
+        ],
+        popover: {
+          image: [
+              ['custom', ['imageAttributes','imageShapes']],
+              ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
+              ['float', ['floatLeft', 'floatRight', 'floatNone']],
+              ['remove', ['removeMedia']]
+          ],
+          table: [
+            ['add', ['addRowDown', 'addRowUp', 'addColLeft', 'addColRight']],
+            ['delete', ['deleteRow', 'deleteCol', 'deleteTable']],
+            ['custom', ['tableHeaders']],
+            ['custom', ['tableStyles']]
+          ],
+          air: [
+            ['color', [,'brush','color']],
+            ['font', ['fontname','fontsize', 'bold','italic', 'underline','strikethrough', 'clear']],
+            ['para', ['ul', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture']]
+          ],
+          link: [
+            ['link', ['linkDialogShow', 'unlink']]
+          ],
+        },
+        
+        imageAttributes:{
+            icon:'<i class="note-icon-pencil"/>',
+            removeEmpty:false, // true = remove attributes | false = leave empty if present
+            disableUpload: true // true = don't display Upload Options | Display Upload Options
+        },
+        listOfLinks: {
+          //listUrl: 'data.json',
+          title: 'List of websites'
+        }
+    };
+
+    window.currentEditMode = false;
+    window.anchor = "";
+
+    window.editMode = function() {
+      if(currentEditMode) return;
+      var scale = $("#summernote").css("zoom");
+
+      window.summernote = $('#summernote').summernote(config);
+      if(!($('#summernote').summernote('fullscreen.isFullscreen'))){
+        $('#summernote').summernote('fullscreen.toggle');
+      }
+      currentEditMode = true;
+      setScaleFactor(scale == "none" ? 1: parseInt(scale));
+    };
+    
+    window.viewMode = function() {
+      if(!currentEditMode) return;
+      var scale = $("#summernote").css("zoom");
+      if(currentEditMode){
+        var height = $(".note-editor").height();
+        $('#summernote').summernote('destroy');
+      }
+      currentEditMode = false;
+      $("#summernote").css("overflow-y", "auto");
+      $("#summernote").css("height", ($(window).height())+"px");
+      setScaleFactor(scale == "none" ? 1: parseInt(scale));
+
+    };
+
+    // should test
+    window.setLinkUrl = function(val){
+      $("#note-dialog-link-url-" + window.uniqueId).autocomplete({
+            source: [[]],
+      });
+
+      $("#note-dialog-link-url-" + window.uniqueId).autocomplete("setSource", [val]);
+    }
+    
+    window.setLinkAnchor = function(val){
+      $("#note-linkTo_list").autocomplete({
+        source:[[]]
+      });
+      $("#note-linkTo_list").autocomplete("setSource", [val]);
+    }
+    
+    window.getHtmlContent = function(){
+      if(currentEditMode){
+        return  $('#summernote').summernote('code');
+      }
+      return $('#summernote').html();
+    }
+
+    window.setHtmlContent = function(value){
+      if(currentEditMode){
+        // $('#summernote').summernote("reset");
+        $('#summernote').summernote('code', value);
+      }else{
+        $('#summernote').html(value);
+      }
+    }
+
+    window.setScaleFactor = function(value){
+      if(currentEditMode){
+        var height = parseInt($(".note-codable").css("height").slice(0, -2)) / value;
+        $(".note-editable").css("zoom", value);
+        $(".note-editable").css("height", height)
+      }
+      $("#summernote").css("zoom", value);
+      $("#summernote").css("overflow-y", "auto");
+      $("#summernote").css("height", ($(window).height()/value)+"px");
+    }
+
+    window.jumpToAnchor = function(val){
+      window.anchor = val;
+      location.href= val;
+    }
+
+    window.toggleShowMode = function(i){
+      var scale = $("#summernote").css("zoom");
+      if(currentEditMode){
+        window.viewMode();
+      }else{
+        window.editMode();
+      }
+      setScaleFactor(parseInt(scale));
+    }
+
+    $(document).ready(function() {
+      window.editMode();
+    });
+  </script>
+</body>
+</html>

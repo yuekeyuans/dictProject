@@ -1,11 +1,12 @@
 #include "appsqlite.h"
 #include <QtSql>
-#include "sqlitesource.h"
+#include "globalsetting.h"
 #include "QDir"
+#include "extra/utils.h"
+#include <QTime>
 
 QString AppSqlite::dbFile = "";
 QString AppSqlite::dictName = "";
-
 
 AppSqlite::AppSqlite()
 {
@@ -24,12 +25,13 @@ AppSqlite::AppSqlite()
     }
 
     if(openDatabase()){
-        initDatabase();
+        createDatabase();
     }
     if(dictName != ""){
-        initDictTable();
+        initDatabase ();
     }
     _appSqlite = this;
+    initTagCount();
 }
 
 bool AppSqlite::openDatabase(){
@@ -43,7 +45,7 @@ bool AppSqlite::openDatabase(){
     return true;
 }
 
-bool AppSqlite::initDatabase(){
+bool AppSqlite::createDatabase(){
 
     if (database.open())
     {
@@ -57,18 +59,34 @@ bool AppSqlite::initDatabase(){
            qWarning("[SQL] %s",qPrintable(sql_query.lastError().text()));
            return false;
        }
+       if(!sql_query.exec(SQL_CREATE_TAG_TABLE)){ //创建表entry 表
+           qWarning("[SQL] %s",qPrintable(sql_query.lastError().text()));
+           return false;
+       }
         return true;
     }
     qWarning("Init database failed,database is not open.");
     return false;
 }
 
-bool AppSqlite::initDictTable(){
+void AppSqlite::initDatabase(){
+    QSqlQuery query1;
+
+    query1.prepare(SQL_INIT_DICT_TABLE);
+    query1.bindValue(":title", dictName);
+    query1.exec();
+
+    QSqlQuery query2;
+    query2.exec (SQL_INIT_TAG_TABLE_ANCHOR);
+
+    QSqlQuery query3;
+    query3.exec (SQL_INIT_TAG_TABLE_PLUGIN);
+}
+
+void AppSqlite::initTagCount()
+{
     QSqlQuery query;
-    query.prepare("INSERT INTO [dict]([id],[title],[description],[image],[html]) VALUES (1,:title,'','','')");
-    query.bindValue(":title", dictName);
-    bool value = query.exec();
-    return value;
+    query.exec(SQL_INIT_TAG_COUNT);
 }
 
 AppSqlite::~AppSqlite(){

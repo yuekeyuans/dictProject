@@ -11,13 +11,14 @@ class MySchemeHandler : public QWebEngineUrlSchemeHandler
 public:
     explicit MySchemeHandler(QObject *parent = nullptr);
     void requestStarted(QWebEngineUrlRequestJob *) override;
-    QString decode(QString str);
-    QScriptValue  decoder;
 
 signals:
-    void jumps(QString);
+    void jumps(QString, QString, QString);
 
 public slots:
+
+private:
+    QString decode(QString str);
 };
 
 #endif // MYSCHEMEHANDLER_H

@@ -22,35 +22,7 @@
      <number>0</number>
     </property>
     <item>
-     <layout class="QHBoxLayout" name="searchBoxLayout">
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
-        <property name="spacing">
-         <number>7</number>
-        </property>
-        <property name="sizeConstraint">
-         <enum>QLayout::SetFixedSize</enum>
-        </property>
-        <item>
-         <layout class="QHBoxLayout" name="menuContainer"/>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QVBoxLayout" name="functionLayout">
-      <property name="spacing">
-       <number>3</number>
-      </property>
-      <item>
-       <widget class="QStackedWidget" name="stackWidget">
-        <property name="currentIndex">
-         <number>-1</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <layout class="QVBoxLayout" name="centralLayout"/>
     </item>
    </layout>
   </widget>
@@ -96,19 +68,17 @@
     <addaction name="actionhtml"/>
     <addaction name="actiondicthtml"/>
    </widget>
-   <widget class="QMenu" name="menu_5">
+   <widget class="QMenu" name="menu">
     <property name="title">
-     <string>帮助</string>
+     <string>测试</string>
     </property>
-    <addaction name="actionmarkdown"/>
-    <addaction name="actionimportexport"/>
-    <addaction name="actionguide"/>
+    <addaction name="actionJumpUrl"/>
    </widget>
    <addaction name="dictMenu"/>
    <addaction name="menu_item"/>
    <addaction name="menu_import"/>
    <addaction name="menu_export"/>
-   <addaction name="menu_5"/>
+   <addaction name="menu"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="enabled">
@@ -154,6 +124,12 @@
   <action name="actionmarkdown">
    <property name="text">
     <string>标记语言</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionimportexport">
@@ -224,6 +200,11 @@
   <action name="actionguide">
    <property name="text">
     <string>程序指南</string>
+   </property>
+  </action>
+  <action name="actionJumpUrl">
+   <property name="text">
+    <string>dialog</string>
    </property>
   </action>
  </widget>

@@ -13,8 +13,9 @@ private:
 public:
     QSqlDatabase database;
     bool openDatabase();
-    bool initDatabase();
-    bool initDictTable();
+    bool createDatabase();
+    void initDatabase();
+    void initTagCount();
 
     static QString dbFile;
     static QString dictName;

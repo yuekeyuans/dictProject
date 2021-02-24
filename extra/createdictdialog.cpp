@@ -13,10 +13,6 @@ CreateDictDialog::CreateDictDialog(QWidget *parent) :
     connect(ui->openFile, &QPushButton::clicked, [=]{this->openFileDialog();});
 }
 
-CreateDictDialog::~CreateDictDialog(){
-    delete ui;
-}
-
 QString CreateDictDialog::getName(){
     return ui->name->text();
 }
@@ -45,4 +41,8 @@ void CreateDictDialog::openFileDialog(){
     ui->path->setText(filePath);
     QFileInfo fileInfo(filePath);
     ui->name->setText(fileInfo.baseName());
+}
+
+CreateDictDialog::~CreateDictDialog(){
+    delete ui;
 }

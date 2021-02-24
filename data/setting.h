@@ -19,10 +19,15 @@ public:
 
     QList<QMap<QString, QString>> getSubMenu();
 
+    double getScaleFactor();
+    void setScaleFactor(double factor);
+
+    void setData(QString, QString);
+    QString getData(QString);
+
+
 private:
     QList<QMap<QString, QString>> dicts;
-
-
 
 };
 

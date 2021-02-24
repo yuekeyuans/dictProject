@@ -7,11 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>379</width>
-    <height>200</height>
+    <height>210</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>统计数据</string>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
@@ -33,9 +36,9 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>20</y>
+     <y>10</y>
      <width>341</width>
-     <height>150</height>
+     <height>151</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout">
@@ -43,7 +46,7 @@
      <number>14</number>
     </property>
     <property name="verticalSpacing">
-     <number>15</number>
+     <number>10</number>
     </property>
     <item row="0" column="0">
      <widget class="QLabel" name="label">
@@ -54,6 +57,23 @@
     </item>
     <item row="0" column="1">
      <widget class="QLabel" name="dictName">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>字典路径</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLabel" name="path">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
       <property name="text">
        <string/>
       </property>
@@ -88,31 +108,28 @@
      </widget>
     </item>
     <item row="4" column="0">
-     <widget class="QLabel" name="label_7">
+     <widget class="QLabel" name="label_4">
       <property name="text">
-       <string>标签组数</string>
+       <string>显示条目数</string>
       </property>
      </widget>
     </item>
     <item row="4" column="1">
-     <widget class="QLabel" name="labelCount">
+     <widget class="QLabel" name="showCount">
       <property name="text">
        <string/>
       </property>
      </widget>
     </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_2">
+    <item row="5" column="0">
+     <widget class="QLabel" name="label_6">
       <property name="text">
-       <string>字典路径</string>
+       <string>隐藏条目数</string>
       </property>
      </widget>
     </item>
-    <item row="1" column="1">
-     <widget class="QLabel" name="path">
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
+    <item row="5" column="1">
+     <widget class="QLabel" name="hideCount">
       <property name="text">
        <string/>
       </property>

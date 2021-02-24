@@ -1,13 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>res/exportHtml/entry_content.html</file>
-        <file>res/exportHtml/entry_list.html</file>
-        <file>res/exportHtml/frame_dict_content.html</file>
-        <file>res/exportHtml/frame_dict_title.html</file>
-        <file>res/exportHtml/index.html</file>
-        <file>res/html/index.html</file>
-        <file>res/html/index_list.html</file>
-        <file>res/html/item.html</file>
         <file>res/img/check.png</file>
         <file>res/img/dict_ico.png</file>
         <file>res/img/Next.png</file>
@@ -16,8 +8,6 @@
         <file>res/img/scale_up.png</file>
         <file>res/img/view_off.png</file>
         <file>res/img/view_on.png</file>
-        <file>res/other/file_to_copy.txt</file>
-        <file>res/exportHtml/jquery.jsx</file>
         <file>res/usage/app.css</file>
         <file>res/usage/icomoon.eot</file>
         <file>res/usage/icomoon.svg</file>
@@ -34,7 +24,84 @@
         <file>res/usage/importExport.html</file>
         <file>res/usage/guide.html</file>
         <file>favoricon.ico</file>
-        <file>res/other/punycode.jsx</file>
         <file>res/img/option.png</file>
+        <file>qnote_zh_CN.qm</file>
+        <file>qnote_zh_CN.ts</file>
+        <file>DictSideBar/res/img/item/add.png</file>
+        <file>DictSideBar/res/img/item/add_tags.png</file>
+        <file>DictSideBar/res/img/item/allTextSearch_off.png</file>
+        <file>DictSideBar/res/img/item/allTextSearch_on.png</file>
+        <file>DictSideBar/res/img/item/info.png</file>
+        <file>DictSideBar/res/img/item/move.png</file>
+        <file>DictSideBar/res/img/item/refresh.png</file>
+        <file>DictSideBar/res/img/item/search_light.png</file>
+        <file>DictSideBar/res/img/item/showHidden.png</file>
+        <file>DictSideBar/res/img/item/showPara_off.png</file>
+        <file>DictSideBar/res/img/item/showPara_on.png</file>
+        <file>DictSideBar/res/img/item/showParagraph_off.png</file>
+        <file>DictSideBar/res/img/item/showParagraph_on.png</file>
+        <file>DictSideBar/res/img/item/view-off.png</file>
+        <file>DictSideBar/res/img/item/view-ons.png</file>
+        <file>DictSideBar/res/img/add.png</file>
+        <file>DictSideBar/res/img/add_tags.png</file>
+        <file>DictSideBar/res/img/allTextSearch_off.png</file>
+        <file>DictSideBar/res/img/allTextSearch_on.png</file>
+        <file>DictSideBar/res/img/info.png</file>
+        <file>DictSideBar/res/img/move.png</file>
+        <file>DictSideBar/res/img/refresh.png</file>
+        <file>DictSideBar/res/img/return.png</file>
+        <file>DictSideBar/res/img/search_light.png</file>
+        <file>DictSideBar/res/img/showHidden.png</file>
+        <file>DictSideBar/res/img/showPara_off.png</file>
+        <file>DictSideBar/res/img/showPara_on.png</file>
+        <file>DictSideBar/res/img/showParagraph_off.png</file>
+        <file>DictSideBar/res/img/showParagraph_on.png</file>
+        <file>DictSideBar/res/img/view-off.png</file>
+        <file>DictSideBar/res/img/view-ons.png</file>
+        <file>DictSideBar/res/img/main-page.png</file>
+        <file>DictSideBar/res/img/dit_page.png</file>
+        <file>res/other/css/font/summernote.eot</file>
+        <file>res/other/css/font/summernote.ttf</file>
+        <file>res/other/css/font/summernote.woff</file>
+        <file>res/other/css/font/summernote.woff2</file>
+        <file>res/other/css/fonts/fontawesome-webfont.eot</file>
+        <file>res/other/css/fonts/fontawesome-webfont.svg</file>
+        <file>res/other/css/fonts/fontawesome-webfont.ttf</file>
+        <file>res/other/css/fonts/fontawesome-webfont.woff</file>
+        <file>res/other/css/fonts/fontawesome-webfont.woff2</file>
+        <file>res/other/css/fonts/FontAwesome.otf</file>
+        <file>res/other/css/fonts/glyphicons-halflings-regular.eot</file>
+        <file>res/other/css/fonts/glyphicons-halflings-regular.svg</file>
+        <file>res/other/css/fonts/glyphicons-halflings-regular.ttf</file>
+        <file>res/other/css/fonts/glyphicons-halflings-regular.woff</file>
+        <file>res/other/css/fonts/glyphicons-halflings-regular.woff2</file>
+        <file>res/other/css/img/blank.gif</file>
+        <file>res/other/css/img/emoji_spritesheet_0.png</file>
+        <file>res/other/css/img/emoji_spritesheet_1.png</file>
+        <file>res/other/css/img/emoji_spritesheet_2.png</file>
+        <file>res/other/css/img/emoji_spritesheet_3.png</file>
+        <file>res/other/css/img/emoji_spritesheet_4.png</file>
+        <file>res/other/css/img/IconsetSmiles.png</file>
+        <file>res/other/css/img/IconsetSmiles_1x.png</file>
+        <file>res/other/css/img/IconsetW.png</file>
+        <file>res/other/css/img/IconsetW_1x.png</file>
+        <file>res/other/css/.css</file>
+        <file>res/other/css/bootstrap.min.css</file>
+        <file>res/other/css/bootstrap.min.js</file>
+        <file>res/other/css/emoji.css</file>
+        <file>res/other/css/font-awesome.css</file>
+        <file>res/other/css/jquery-3.4.1.min.js</file>
+        <file>res/other/css/jquery.autocomplete.css</file>
+        <file>res/other/css/jquery.typeahead.min.css</file>
+        <file>res/other/css/styles.css</file>
+        <file>res/other/css/summernote-add-text-tags.css</file>
+        <file>res/other/css/summernote-ext-databasic.css</file>
+        <file>res/other/css/summernote-list-styles.css</file>
+        <file>res/other/css/summernote.css</file>
+        <file>res/other/css/summernote.min.css</file>
+        <file>res/other/template.html</file>
+        <file>punycode.jsx</file>
+        <file>package.ico</file>
+        <file>database.ico</file>
     </qresource>
 </RCC>

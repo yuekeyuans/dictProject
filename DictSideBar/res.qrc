@@ -1,0 +1,44 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/img/allTextSearch_off.png</file>
+        <file>res/img/allTextSearch_on.png</file>
+        <file>res/img/showPara_off.png</file>
+        <file>res/img/showPara_on.png</file>
+        <file>res/img/showParagraph_off.png</file>
+        <file>res/img/showParagraph_on.png</file>
+        <file>res/img/refresh.png</file>
+        <file>res/img/add.png</file>
+        <file>res/img/info.png</file>
+        <file>res/img/move.png</file>
+        <file>res/img/search_light.png</file>
+        <file>res/img/return.png</file>
+        <file>res/img/add_tags.png</file>
+        <file>../res/img/check.png</file>
+        <file>../res/img/dict_ico.png</file>
+        <file>../res/img/Next.png</file>
+        <file>../res/img/option.png</file>
+        <file>../res/img/Previous.png</file>
+        <file>../res/img/scale_down.png</file>
+        <file>../res/img/scale_up.png</file>
+        <file>../res/img/view_off.png</file>
+        <file>../res/img/view_on.png</file>
+        <file>res/img/showHidden.png</file>
+        <file>res/img/view-off.png</file>
+        <file>res/img/view-ons.png</file>
+        <file>res/img/item/add.png</file>
+        <file>res/img/item/add_tags.png</file>
+        <file>res/img/item/allTextSearch_off.png</file>
+        <file>res/img/item/allTextSearch_on.png</file>
+        <file>res/img/item/info.png</file>
+        <file>res/img/item/move.png</file>
+        <file>res/img/item/refresh.png</file>
+        <file>res/img/item/search_light.png</file>
+        <file>res/img/item/showHidden.png</file>
+        <file>res/img/item/showPara_off.png</file>
+        <file>res/img/item/showPara_on.png</file>
+        <file>res/img/item/showParagraph_off.png</file>
+        <file>res/img/item/showParagraph_on.png</file>
+        <file>res/img/item/view-off.png</file>
+        <file>res/img/item/view-ons.png</file>
+    </qresource>
+</RCC>

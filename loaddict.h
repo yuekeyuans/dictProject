@@ -15,21 +15,18 @@ class LoadDict : public QWidget, public BaseWidget
 public:
     explicit LoadDict(QWidget *parent = nullptr);
     ~LoadDict();
-    void setDefaultValue(const QString& val1, const QString& val2){
-    }
-    WebViewWithEditor* editor;
+    WebViewWithEditor* editor{nullptr};
 
 public slots:
     void load();
     void save();
-    void viewModeChanged();
 
 signals:
-    void jumps(QString);
+    void emitJumpPage(EntryModel*, QString fragment);
+    void emitViewModeChanged(bool);
 
 private:
     Ui::LoadDict *ui;
-
 };
 
 #endif // LOADDICT_H

@@ -11,6 +11,7 @@ addItem::addItem(QWidget *parent) :
     ui(new Ui::addItem)
 {
     entry = new EntryModel();
+    isAddEntry = true;
 
     ui->setupUi(this);
     editor = new WebViewWithEditor(this);
@@ -19,60 +20,51 @@ addItem::addItem(QWidget *parent) :
     connect(ui->saveButton, &QPushButton::clicked, this,  &addItem::save);
     connect(editor, &WebViewWithEditor::jumps, this, &addItem::emitJumpPage);
     connect(editor, &WebViewWithEditor::toSave, this, &addItem::save);
-    //connect(editor, &WebViewWithEditor::emitViewModeChanged, this, &addItem::viewModeChanged);
+    connect(this, &addItem::emitViewModeChanged, editor, &WebViewWithEditor::slotViewModeChanged);
+    connect(this, &addItem::emitViewModeChanged, [&](bool viewMode){ui->lineEdit->setEnabled (!viewMode);});
+    connect(this, &addItem::emitSetHtmlValue, editor, &WebViewWithEditor::setHtmlValue);
+    connect(this, &addItem::emitGetHtmlValue, editor, &WebViewWithEditor::getHtmlValueWithSet);
+    connect(editor, &WebViewWithEditor::emitEntryChanged, this, &addItem::entryChanged);
+    connect(this, &addItem::emitSideBarUpdated, editor, &WebViewWithEditor::slotUpdateEntryCount);
 }
 
 void addItem::save(){
-    this->editor->getHtmlValue([&](QString html){
-        bool isInsert = entry->id == -1;
-        entry->html = html;
-        entry->entry = ui->lineEdit->text();
-        if(entry->entry == ""){
-            QMessageBox::about (this,"tips","complete the infomation");
-            return;
-        }
-        entry->insertOrUpdate();
-        emit this->entryChanged();
-        QMessageBox::about(this, tr("tips"),
-                           isInsert?tr("insert succeed"):tr("update succeed"));
-    });
+    entry->entry = this->ui->lineEdit->text();
+    editor->setEntry(this->entry);
+    emit emitGetHtmlValue(this->entry);
 }
 
-void addItem::updatePage(int id){
-    if(entry != nullptr){
+void addItem::updatePage(){
+    if(this->entry != nullptr){
+        ui->lineEdit->setText(this->entry->entry);
+        editor->setEntry(this->entry);
+        emit emitSetHtmlValue(entry->html);
+    }
+}
+
+void addItem::setDefaultValue (QString  val1,QString){
+    updatePage ();
+    if(val1 !=""){
+        editor->slotJumpToAnchor (val1);
+    }
+}
+
+void addItem::setEntryModel(EntryModel *entryModel)
+{
+    if (entry != nullptr && isAddEntry) {
         delete entry;
         entry = nullptr;
     }
-    if(id == -1){
-        entry = new EntryModel();
-    }else{
-        EntryModel model{id};
-        entry = model.copyLoad();
-    }
-    ui->lineEdit->setText(entry->entry);
-    editor->setHtmlValue(entry->html);
-}
-
-void addItem::deletePage(){
-    entry->deleted();
-    emit entryChanged();
-    updatePage();
-}
-
-void addItem::setDefaultValue (QString  val1,QString val2){
-    updatePage (val1 == "" ? -1:val1.toInt ());
-}
-
-bool addItem::hasEntry(QString name){
-    EntryModel model{name};
-    return model.checkExist();
+    this->entry = entryModel == nullptr ? new EntryModel : entryModel;
+    isAddEntry = entry->id == EntryModel::ENTRY_ID_NULL;
 }
 
 addItem::~addItem()
 {
     delete ui;
     delete editor;
-    if(entry != nullptr){
+    if(entry != nullptr &&isAddEntry){
         delete entry;
+        entry = nullptr;
     }
 }

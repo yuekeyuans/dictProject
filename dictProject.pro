@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui  sql webenginewidgets script
+QT       += core gui  sql webenginewidgets script concurrent websockets webchannel
 QT       -= qml quick webengine printsupport positioning serialport quickwidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -18,24 +18,27 @@ TEMPLATE = app
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 
+DEFINES += COMPILE_IN_CODING # 当前模式
 
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-CONFIG+=resources_big
+CONFIG += resources_big
 
 CONFIG += c++11
 
-RC_ICONS = favoricon.ico
+LIBS += -lAdvAPI32
+
+RC_ICONS += favoricon.ico database.ico Package.ico
+
 
 SOURCES += \
         DictSideBar/bodybarfilelist.cpp \
         DictSideBar/headerbar.cpp \
         DictSideBar/headerbarmenu.cpp \
         DictSideBar/headerbarsearch.cpp \
-#        DictSideBar/main.cpp \
         DictSideBar/sidebar.cpp \
         DictSideBar/sidebaritem.cpp \
         DictSideBar/sidebaritemmodel.cpp \
@@ -79,20 +82,26 @@ SOURCES += \
         data/entrymodel.cpp \
         data/dictmodel.cpp \
         data/setting.cpp \
+        data/tagmodel.cpp \
         defaultpage.cpp \
         extra/createdictdialog.cpp \
-    extra/dictinfodialog.cpp \
+        extra/dictinfodialog.cpp \
         extra/menuitemwidget.cpp \
         extra/myschemehandler.cpp \
         extra/sidebarselectdialog.cpp \
+        extra/tagexportoptionsdialog.cpp \
+        extra/utils.cpp \
         helppage.cpp \
         importExport/export.cpp \
         importExport/exporttodicthtml.cpp \
         importExport/exporttoexcel.cpp \
         importExport/exporttohtml.cpp \
         importExport/exporttopdb.cpp \
+        importExport/exporttotag.cpp \
         importExport/import.cpp \
         importExport/importfromexcel.cpp \
+        link-anchor/linkanchorwidget.cpp \
+        link-anchor/webchannelobject.cpp \
         loaddict.cpp \
         main.cpp \
         mainwindow.cpp \
@@ -163,26 +172,30 @@ HEADERS += \
         data/router.h \
         data/dictmodel.h \
         data/setting.h \
+        data/tagmodel.h \
         defaultpage.h \
         extra/createdictdialog.h \
         extra/dictinfodialog.h \
         extra/menuitemwidget.h \
         extra/myschemehandler.h \
         extra/sidebarselectdialog.h \
-        extra/testlib.h \
-        extra/testlib_global.h \
+        extra/tagexportoptionsdialog.h \
+        extra/utils.h \
+        globalsetting.h \
         helppage.h \
         importExport/export.h \
         importExport/exporttodicthtml.h \
         importExport/exporttoexcel.h \
         importExport/exporttohtml.h \
         importExport/exporttopdb.h \
+        importExport/exporttotag.h \
         importExport/import.h \
         importExport/importfromexcel.h \
+        link-anchor/linkanchorwidget.h \
+        link-anchor/webchannelobject.h \
         loaddict.h \
         mainwindow.h \
         qt-json-master/json.h \
-        sqlitesource.h \
         webviewwitheditor.h
 
 FORMS += \
@@ -199,7 +212,9 @@ FORMS += \
         extra/dictinfodialog.ui \
         extra/menuitemwidget.ui \
         extra/sidebarselectdialog.ui \
+        extra/tagexportoptionsdialog.ui \
         helppage.ui \
+        link-anchor/linkanchorwidget.ui \
         loaddict.ui \
         mainwindow.ui \
         webviewwitheditor.ui
@@ -213,16 +228,16 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    DictSideBar/res.qrc \
-    page.qrc \
-    res.qrc \
-    translator.qrc
+    res.qrc
+
 
 TRANSLATIONS += qnote_zh_CN.ts
 
 DISTFILES += \
+    DictSideBar/res/img/item/ \
     DictSideBar/res/img/ \
-    res/
+    res/ \
+    summernote/ \
 
 # NOTE: You can fix value of QXlsx path of source code.
   QXLSX_PARENTPATH=./QXlsx/
@@ -234,7 +249,3 @@ include(./QXlsx/QXlsx.pri)
 
 #SUBDIRS += \
 #    QXlsx/QXlsx.pro
-
-SUBDIRS += \
-    DictSideBar/DictSideBar.pro
-

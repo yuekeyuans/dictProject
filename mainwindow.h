@@ -15,6 +15,13 @@
 #include "importExport/import.h"
 #include <QApplication>
 #include "DictSideBar/sidebar.h"
+#include <QStackedWidget>
+#include <QSplitter>
+#include <Windows.h>
+#include <winreg.h>
+#include <ShlObj_core.h>
+#include <tchar.h>
+#include "link-anchor/linkanchorwidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -27,12 +34,16 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void RegisterShellFileType(
+        QString ext_name, QString type_name, QString description);
+    void openDict(QString path);
 
 public slots:
-    void _createNewDict();
+        void slotCreateDict();
     void slotOpenDict(QString);
     void slotCloseDict();
-    void _reshapeSubmenu(QString name = "");
+    void slotReshapeMenu(QString name = "");
+    void slotViewModeChanged();
 
 private:
 
@@ -42,19 +53,20 @@ private:
     void initMainPage();
     void initDefaultPage();
     void initDictPage();
-    void initHelpPage();
     void initItemPage();
     void initImportExport();
     void initSideBar();
     void initMenu();
 
+    QSplitter* splitter{nullptr};
+    QStackedWidget* stackedWidget;
+    QAction* viewMode{nullptr};
+    QAction* homePage{nullptr};
+
     Ui::MainWindow *ui{nullptr};
     QList<Router> routers;
-    QMap<int, QString>* sortAction{nullptr};
-    QList<QPair<int, QString>>* items{nullptr};
 
     DefaultPage* _defaultPage{nullptr};
-    HelpPage* _helpPage{nullptr};
     LoadDict* _loadDict{nullptr};
     addItem* _addItem{nullptr};
     SideBar* _sideBar{nullptr};
@@ -63,18 +75,20 @@ private:
     Export* exports{nullptr};
 
     Setting* globalSetting{nullptr};
-    QList<QAction*>* menuActions{nullptr};
 
     QIcon check{":/res/img/check.png"};
+    QIcon view_on{":/res/img/view-ons.png"};
+    QIcon view_off{":/res/img/view-off.png"};
     bool loadFinish{false};
+    bool isViewMode{false};
 
 private slots:
     //跳转页面
     void _jump(const QString&, QString = "", QString = "");
 
 signals:
-    void emitLoadDict();
     void emitDictChanged();
+    void emitViewModeChanged(bool);
 };
 
 #endif // MAINWINDOW_H

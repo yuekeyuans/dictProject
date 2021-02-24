@@ -6,46 +6,50 @@
 #include "data/dictmodel.h"
 #include "data/entrymodel.h"
 #include <QMessageBox>
+#include <QStandardPaths>
+#include <QDebug>
+#include "globalsetting.h"
+#include "data/setting.h"
 
-ExportToPdb::ExportToPdb(QObject *parent) : QThread(parent)
-{
+ExportToPdb::ExportToPdb(QObject *parent) : QThread(parent) {
+
+    Setting setting;
+    basePath = setting.getData ("exePath") + COPY_PATH;
+    qDebug() << basePath;
+
     //主页
-    QFile index(":/res/html/index.html");
+    QFile index(basePath + "pdb/index.html");
     if(index.open(QIODevice::ReadOnly | QIODevice::Text)){
          index_page = QString::fromStdString(index.readAll().toStdString());
          index.close();
     }
     //目录页
-    QFile indexList(":/res/html/index_list.html");
+    QFile indexList(basePath + "pdb/index_list.html");
     if(indexList.open(QIODevice::ReadOnly | QIODevice::Text)){
          index_list_page = QString::fromStdString(indexList.readAll().toStdString());
          indexList.close();
     }
     //项目页
-    QFile item(":/res/html/item.html");
+    QFile item(basePath + "pdb/template.html");
     if(item.open(QIODevice::ReadOnly | QIODevice::Text)){
          item_page = QString::fromStdString(item.readAll().toStdString());
          item.close();
     }
-    //需要拷贝的文件
 }
 
-void ExportToPdb::process(){
-    QString dir = QFileDialog::getExistingDirectory(nullptr, tr("getDir"),"./");
+void ExportToPdb::run(){
     QDir destDir(dir);
-    {// copy nessary file
-        QFile::copy(":/res/exportHtml/jquery.jsx", destDir.filePath("jquery.js"));
-        QString listPath = destDir.filePath(":/res/other/file_to_copy.txt");
-        QFile file(listPath);
-        destDir.mkdir("emoji");
-        if(file.open(QIODevice::ReadOnly| QIODevice::Text)){
-            while (!file.atEnd()){
-                QString line = file.readLine().trimmed();
-                QString srcPath = ":/simditor/" + line;
-                QString destPath = destDir.filePath(line);
-                QFile::copy(srcPath, destPath);
-            }
-            file.close();
+    {   // copy nessary file
+        QDir sourceDir{basePath+"pdb/css/"};
+        destDir.mkdir("css");
+
+        QFileInfoList file_list = sourceDir.entryInfoList(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+
+        for(int i = 0; i != file_list.size(); i++)
+        {
+            QString srcPath = file_list.at(i).absoluteFilePath();
+            QString destPath = destDir.path () + "/css/" + file_list.at (i).fileName ();
+            QFile::copy(srcPath, destPath);
         }
     }
     { //generate dict
@@ -74,12 +78,18 @@ void ExportToPdb::process(){
         temp.replace(":content_to_be_load", entry->html);
         writeFile(path, temp);
     }
-    for(auto entry:*entries){
-        delete entry;
-    }
+    qDeleteAll(*entries);
+    entries->clear();
     delete entries;
+    entries = nullptr;
     delete dict;
-    QMessageBox::about(nullptr, tr("tip"), tr("success"));
+    dict = nullptr;
+    emit emitComplete ();
+}
+
+
+void ExportToPdb::process(){
+    this->start ();
 }
 
 void ExportToPdb::writeFile(QString path, QString content){
@@ -90,7 +100,9 @@ void ExportToPdb::writeFile(QString path, QString content){
         QRegExp ex("\"entry://(.*)\"");
         ex.setMinimal(true);
         ex.indexIn(content);
-        content.replace(ex, "\"\\1.html\"");
+        content = content.replace(ex, "\"\\1.html\"");
+        content = content.replace ("plugin/summernote-emoji-master/tam-emoji/img/", "./css/");
+
         out << content;
         out.flush();
         file.close();
@@ -107,6 +119,11 @@ void ExportToPdb::setEntries(QList<EntryModel *> * entries){
 
 void ExportToPdb::setBaseName(QString baseName){
     this->baseName = baseName;
+}
+
+void ExportToPdb::setDir(QString dir)
+{
+    this->dir = dir;
 }
 
 ExportToPdb::~ExportToPdb(){
